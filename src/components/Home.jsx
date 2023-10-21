@@ -10,6 +10,9 @@ const Home = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const location = useLocation();
+  const [trigger, setTrigger] = useState(0);
+  const [loading, setLoading] = useState(true);
+  const [noProductsFound, setNoProductsFound] = useState(false);
   const {
     getAllProducts,
     getAllProductsByName,
@@ -22,12 +25,13 @@ const Home = () => {
   const [product, setProduct] = useState([]);
   const [isLast, setIsLast] = useState(0);
   const [totalPages, setTotalPages] = useState();
-  const [searchType, setSearchType] = useState();
+  const [searchType, setSearchType] = useState("");
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("");
   const [brand, setBrand] = useState("");
   const [allCategories, setAllCategories] = useState();
   const [allBrands, setAllBrands] = useState();
+  const [sortBy, setSortBy] = useState();
 
   useEffect(() => {
     searchParams.set("page", page.toString());
@@ -38,6 +42,7 @@ const Home = () => {
         let response;
 
         if (searchType === "Name" && query) {
+          console.log(query);
           response = await getAllProductsByName(page, size, query);
         } else if (searchType === "Category" && category) {
           response = await getAllProductsByCategory(page, size, category);
@@ -47,27 +52,37 @@ const Home = () => {
           response = await getAllProducts(page, size);
         }
 
-        setProduct(response.data.products);
-        setIsLast(response.data.lastPage);
-        setTotalPages(response.data.totalPages);
+        setProduct(response?.products);
+        console.log(response?.products);
+        setIsLast(response?.data?.lastPage);
+        setTotalPages(response?.data?.totalPages);
       } catch (err) {
         console.error(err);
         navigate("/login", { state: { from: location }, replace: true });
       }
     };
 
-    const getBrands = async () => {
+    const getBrand = async () => {
       const response = await getBrands();
-      console.log("brands are : " + response);
+      setAllBrands(response);
     };
 
-    const getCategories = async () => {
+    const getCategory = async () => {
       const response = await getCategories();
-      console.log("categories are : " + response);
+      setAllCategories(response);
     };
+    getBrand();
+    getCategory();
     getAllProduct();
+    // Set loading to false and display "No products found" message after a delay
+    const loadingTimeout = setTimeout(() => {
+      setLoading(false);
+      setNoProductsFound(product.length === 0);
+    }, 500); // 5 seconds delay
+
+    return () => clearTimeout(loadingTimeout);
     // eslint-disable-next-line
-  }, [page, searchType]);
+  }, [page, searchType, trigger, product.length]);
 
   const handleSearchTypeChange = (newSearchType) => {
     setSearchType(newSearchType);
@@ -80,16 +95,29 @@ const Home = () => {
         onQueryChange={setQuery}
         searchType={searchType}
         onSearchTypeChange={handleSearchTypeChange}
-        category={category}
-        onCategoryChange={setCategory}
-        brand={brand}
-        onBrandChange={setBrand}
+        selectedCategory={category}
+        categories={allCategories}
+        onSelectCategory={setCategory} // updated prop name
+        selectedBrand={brand}
+        brands={allBrands}
+        onSelectBrand={setBrand} // updated prop name
+        sortBy={sortBy}
+        onSortByChange={setSortBy}
+        onSearch={() => {
+          setPage(0);
+          setSearchType("Name");
+          setTrigger(trigger + 1); // increment trigger to force useEffect to re-run
+        }}
       />
       <main className="grid grid-cols-2 gap-x-6 gap-y-10 px-2 pb-20 sm:grid-cols-3 sm:px-8 lg:mt-16 lg:grid-cols-4 lg:gap-x-4 lg:px-0">
-        {product.length > 0 ? (
-          product.map((product, i) => <ProductCard key={i} product={product} />)
-        ) : (
+        {loading ? (
           <LoadingPage />
+        ) : noProductsFound ? (
+          <div>No products found</div>
+        ) : (
+          product?.map((product, i) => (
+            <ProductCard key={i} product={product} />
+          ))
         )}
       </main>
       <Pagination

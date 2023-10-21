@@ -43,6 +43,8 @@ var ProductService = function ProductService() {
         "Content-Type": "application/json"
       },
       withCredentials: true
+    }).then(function (res) {
+      return res.data;
     });
   };
 
@@ -52,6 +54,8 @@ var ProductService = function ProductService() {
         "Content-Type": "application/json"
       },
       withCredentials: true
+    }).then(function (res) {
+      return res.data;
     });
   };
 
@@ -67,26 +71,52 @@ var ProductService = function ProductService() {
         "Content-Type": "application/json"
       },
       withCredentials: true
+    }).then(function (res) {
+      return res.data;
     });
   };
 
-  var getAllProductsByCategory = function getAllProductsByCategory(page, size, category) {
-    return axiosPrivate.get("/product/searchBybrand", {
-      params: {
-        pageNo: page,
-        pageSize: size,
-        category: category
+  var getAllProductsByCategory = function getAllProductsByCategory() {
+    var page,
+        size,
+        category,
+        res,
+        _args = arguments;
+    return regeneratorRuntime.async(function getAllProductsByCategory$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            page = _args.length > 0 && _args[0] !== undefined ? _args[0] : 0;
+            size = _args.length > 1 && _args[1] !== undefined ? _args[1] : 8;
+            category = _args.length > 2 ? _args[2] : undefined;
+            _context.next = 5;
+            return regeneratorRuntime.awrap(axiosPrivate.get("/product/searchByCategory", {
+              params: {
+                pageNo: page,
+                pageSize: size,
+                category: category
+              }
+            }, {
+              headers: {
+                "Content-Type": "application/json"
+              },
+              withCredentials: true
+            }));
+
+          case 5:
+            res = _context.sent;
+            return _context.abrupt("return", res.data);
+
+          case 7:
+          case "end":
+            return _context.stop();
+        }
       }
-    }, {
-      headers: {
-        "Content-Type": "application/json"
-      },
-      withCredentials: true
     });
   };
 
   var getAllProductsByBrand = function getAllProductsByBrand(page, size, brand) {
-    return axiosPrivate.get("/product/searchByCategory", {
+    return axiosPrivate.get("/product/searchByBrand", {
       params: {
         pageNo: page,
         pageSize: size,
@@ -97,6 +127,8 @@ var ProductService = function ProductService() {
         "Content-Type": "application/json"
       },
       withCredentials: true
+    }).then(function (res) {
+      return res.data;
     });
   };
 

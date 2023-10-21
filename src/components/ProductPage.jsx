@@ -8,10 +8,11 @@ import LoadingPage from "./Loading";
 
 const ProductPage = () => {
   const [product, setProduct] = useState(null);
+  // eslint-disable-next-line
   const [reviews, setReviews] = useState([]);
   const [similarProducts, setSimilarProducts] = useState([]);
   const { id } = useParams();
-  const { getProductById } = ProductService();
+  const { getProductById, getAllProductsByCategory } = ProductService();
 
   useEffect(() => {
     // // Fetch product details by ID
@@ -28,15 +29,19 @@ const ProductPage = () => {
     //     setReviews(data);
     //   });
     // // Fetch similar products by category
-    // if (product) {
-    //   fetch(`/api/products?category=${product.category}`)
-    //     .then((response) => response.json())
-    //     .then((data) => {
-    //       setSimilarProducts(data);
-    //     });
-    // }
+    const similar = async () => {
+      console.log("called");
+      const response = await getAllProductsByCategory(0, 8, product.category);
+      console.log(response);
+      setSimilarProducts(response.products);
+    };
+    if (product) {
+      similar();
+    }
+
     getProduct();
-  }, []);
+    // eslint-disable-next-line
+  }, [product?.category]);
 
   if (!product) {
     return <LoadingPage />;
