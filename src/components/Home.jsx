@@ -73,7 +73,6 @@ const Home = () => {
         setIsLast(response?.lastPage);
         setTotalPages(response?.totalPages);
       } catch (err) {
-        console.error(err);
         navigate("/login", { state: { from: location }, replace: true });
       }
     };

@@ -19,7 +19,6 @@ const ProductPage = () => {
 
     const getProduct = async () => {
       const response = await getProductById(id);
-      console.log(response);
       setProduct(response);
     };
     // // Fetch reviews for the product
@@ -30,10 +29,17 @@ const ProductPage = () => {
     //   });
     // // Fetch similar products by category
     const similar = async () => {
-      console.log("called");
-      const response = await getAllProductsByCategory(0, 8, product.category);
-      console.log(response);
-      setSimilarProducts(response.products);
+      const response = await getAllProductsByCategory(
+        0,
+        8,
+        "id",
+        "asc",
+        product.category
+      );
+      const filteredProducts = response.products.filter(
+        (p) => p.id !== product.id
+      );
+      setSimilarProducts(filteredProducts);
     };
     if (product) {
       similar();

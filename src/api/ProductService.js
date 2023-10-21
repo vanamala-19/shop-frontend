@@ -71,14 +71,9 @@ const ProductService = () => {
       .then((res) => res.data);
   };
 
-  const getAllProductsByCategory = async (
-    page = 0,
-    size = 8,
-    sortBy,
-    sortDir,
-    category
-  ) => {
-    const res = await axiosPrivate.get(
+  const getAllProductsByCategory = (page, size, sortBy, sortDir, category) => {
+    console.log(page);
+    const res = axiosPrivate.get(
       "/product/searchByCategory",
       {
         params: {
