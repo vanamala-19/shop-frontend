@@ -34,9 +34,9 @@ const ProductPage = () => {
         8,
         "id",
         "asc",
-        product.category
+        product?.category
       );
-      const filteredProducts = response.products.filter(
+      const filteredProducts = response?.products?.filter(
         (p) => p.id !== product.id
       );
       setSimilarProducts(filteredProducts);
@@ -60,7 +60,7 @@ const ProductPage = () => {
           <div className="aspect-square overflow-hidden flex items-center">
             <img
               className="h-full w-full object-contain"
-              src={`data:image/jpeg;base64,${product.image}`}
+              src={`data:image/jpeg;base64,${product?.image}`}
               alt="Product pic"
             />
           </div>
