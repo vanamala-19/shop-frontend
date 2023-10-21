@@ -31,15 +31,13 @@ const ProductCard = ({ product }) => {
   const Rating = ({ n }) => {
     return (
       <div className="mt-2 flex items-center">
-        {[...Array(n)].map((e, i) => (
-          <FullStar key={i} />
-        ))}
-        {[...Array(5 - n)].map((e, i) => (
-          <Star key={i} />
-        ))}
+        {[...Array(5)].map((e, i) =>
+          i < n ? <FullStar key={i} /> : <Star key={i} />
+        )}
       </div>
     );
   };
+
   return (
     <article className="relative">
       <div className="aspect-square overflow-hidden">

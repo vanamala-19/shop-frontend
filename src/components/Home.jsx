@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ProductService from "../api/ProductService";
-import Search1 from "./Search1";
+import Search from "./Search";
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import ProductCard from "./ProductCard";
 import LoadingPage from "./Loading";
@@ -27,11 +27,11 @@ const Home = () => {
   const [totalPages, setTotalPages] = useState();
   const [searchType, setSearchType] = useState("");
   const [query, setQuery] = useState("");
-  const [category, setCategory] = useState("");
-  const [brand, setBrand] = useState("");
+  const [choice, setChoice] = useState("");
   const [allCategories, setAllCategories] = useState();
   const [allBrands, setAllBrands] = useState();
   const [sortBy, setSortBy] = useState();
+  const [sortDir, setSortDir] = useState();
 
   useEffect(() => {
     searchParams.set("page", page.toString());
@@ -42,20 +42,36 @@ const Home = () => {
         let response;
 
         if (searchType === "Name" && query) {
-          console.log(query);
-          response = await getAllProductsByName(page, size, query);
-        } else if (searchType === "Category" && category) {
-          response = await getAllProductsByCategory(page, size, category);
-        } else if (searchType === "Brand" && brand) {
-          response = await getAllProductsByBrand(page, size, brand);
+          response = await getAllProductsByName(
+            page,
+            size,
+            sortBy,
+            sortDir,
+            query
+          );
+        } else if (searchType === "Category" && query) {
+          response = await getAllProductsByCategory(
+            page,
+            size,
+            sortBy,
+            sortDir,
+            query
+          );
+        } else if (searchType === "Brand" && query) {
+          response = await getAllProductsByBrand(
+            page,
+            size,
+            sortBy,
+            sortDir,
+            query
+          );
         } else {
-          response = await getAllProducts(page, size);
+          response = await getAllProducts(page, size, sortBy, sortDir);
         }
 
         setProduct(response?.products);
-        console.log(response?.products);
-        setIsLast(response?.data?.lastPage);
-        setTotalPages(response?.data?.totalPages);
+        setIsLast(response?.lastPage);
+        setTotalPages(response?.totalPages);
       } catch (err) {
         console.error(err);
         navigate("/login", { state: { from: location }, replace: true });
@@ -90,19 +106,22 @@ const Home = () => {
 
   return (
     <div className="mx-auto max-w-screen-lg px-5 py-5">
-      <Search1
-        query={query}
-        onQueryChange={setQuery}
+      <Search
+        choice={choice}
+        setChoice={setChoice}
+        onChangeAction={() => {
+          setPage(0);
+          setTrigger(trigger + 1); // increment trigger to force useEffect to re-run
+        }}
+        setSearchType={setSearchType}
         searchType={searchType}
+        setSortBy={setSortBy}
+        setSortDir={setSortDir}
+        query={query}
+        setQuery={setQuery}
         onSearchTypeChange={handleSearchTypeChange}
-        selectedCategory={category}
         categories={allCategories}
-        onSelectCategory={setCategory} // updated prop name
-        selectedBrand={brand}
         brands={allBrands}
-        onSelectBrand={setBrand} // updated prop name
-        sortBy={sortBy}
-        onSortByChange={setSortBy}
         onSearch={() => {
           setPage(0);
           setSearchType("Name");

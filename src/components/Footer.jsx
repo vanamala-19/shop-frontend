@@ -3,7 +3,7 @@ import React from "react";
 const Footer = () => {
   return (
     // <!-- Footer section with social media icons and newsletter sign-up -->
-    <footer className="bg-neutral-900 text-white f h-10 -bottom-full w-full ">
+    <footer className="bg-neutral-900 text-white f h-10 -bottom-full w-full m-0 p-0">
       <div className=" container px-6 flex-grow">
         {/* Social media icons and newsletter sign-up */}
         {/* ... */}
