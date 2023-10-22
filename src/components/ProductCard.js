@@ -70,8 +70,9 @@ const ProductCard = ({ product }) => {
         <div className="">
           <h3 className="text-xs font-semibold sm:text-sm md:text-base">
             <a href={`/product/${product.id}`} title="" className="">
-              {product.name}
-              <span className="absolute" aria-hidden="true"></span>
+              <span className="" aria-hidden="true">
+                {product.name}
+              </span>
             </a>
           </h3>
 

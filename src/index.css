@@ -60,6 +60,7 @@ h5,
 h6,
 p,
 span,
+label,
 a {
   color: var(--text-color);
 }
