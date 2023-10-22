@@ -28,16 +28,6 @@ a:hover {
 }
 
 /* styles.css */
-.navbar-light {
-  background-color: #f8f9fa !important;
-  color: #495057;
-}
-
-.navbar-dark {
-  background-color: #343a40 !important;
-  color: #ffffff;
-}
-/* styles.css */
 /* styles.css */
 /* styles.css */
 .dark {
@@ -62,6 +52,12 @@ p,
 span,
 label,
 a {
+  color: var(--text-color);
+}
+nav a {
+  color: var(--text-color);
+}
+article h3 a span {
   color: var(--text-color);
 }
 

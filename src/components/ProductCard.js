@@ -69,11 +69,10 @@ const ProductCard = ({ product }) => {
       <div className="mt-4 flex items-start justify-between">
         <div className="">
           <h3 className="text-xs font-semibold sm:text-sm md:text-base">
-            <a href={`/product/${product.id}`} title="" className="">
-              <span className="" aria-hidden="true">
-                {product.name}
-              </span>
-            </a>
+            {/* <a href={`/product/${product.id}`} title="" className=""> */}
+            <p className="" aria-hidden="true">
+              {product.name}
+            </p>
           </h3>
 
           <Rating n={product.rating} />

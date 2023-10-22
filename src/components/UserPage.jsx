@@ -8,6 +8,7 @@ const UserPage = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [changeImg, setChangeImg] = useState(false);
   const { getuser } = UserService();
 
   useEffect(() => {
@@ -38,7 +39,7 @@ const UserPage = () => {
       {user ? (
         <div className="bg-white shadow-lg rounded-lg overflow-hidden w-full max-w-md p-6">
           <div className="flex flex-col items-center">
-            {user?.image ? (
+            {user?.image || !changeImg ? (
               <img
                 src={`data:image/jpeg;base64,${user?.image}`}
                 alt="user pic"
@@ -49,7 +50,7 @@ const UserPage = () => {
             )}
             <button
               // eslint-disable-next-line no-undef
-              onClick={triggerFileInput}
+              onClick={() => setChangeImg(!changeImg)}
               className="bg-blue-500 text-white px-2 py-1 text-xs rounded cursor-pointer hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 mt-2">
               Change Profile Picture
             </button>

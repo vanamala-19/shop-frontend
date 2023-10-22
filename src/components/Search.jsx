@@ -66,9 +66,11 @@ const DropDown = ({
               } else if (choice === "Brand") {
                 setQuery(option);
                 setSearchType(choice);
-              } else {
+                setToggleMain(!toggle);
+              } else if (choice === "Category") {
                 setQuery(option);
                 setSearchType(choice);
+                setToggleMain(!toggle);
               }
 
               onChangeAction();
