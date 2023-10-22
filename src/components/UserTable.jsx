@@ -32,13 +32,13 @@ const UsersTable = ({ User, deleteUser, id }) => {
       </td>
       <td className="text-right px-6 py-4 whitespace-nowrap font-medium text-sm">
         <button
-          onClick={(e, id) => editUser(e, User.custId)}
+          onClick={(e) => editUser(e, User.custId)}
           className="text-indigo-600 hover:text-indigo-800 px-4 hover:cursor-pointer">
           <GrEdit />
           Edit
         </button>
         <button
-          onClick={(e, id) => deleteUser(e, User.custId)}
+          onClick={(e) => deleteUser(e, User.custId)}
           className="text-indigo-600 hover:text-indigo-800 hover:cursor-pointer">
           <RiDeleteBinLine />
           Delete

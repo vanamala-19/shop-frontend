@@ -20,6 +20,7 @@ const ProductPage = () => {
     const getProduct = async () => {
       const response = await getProductById(id);
       setProduct(response);
+      console.log(response);
     };
     // // Fetch reviews for the product
     // fetch(`/api/reviews/${id}`)

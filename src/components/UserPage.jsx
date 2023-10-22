@@ -1,109 +1,103 @@
 import { useState, useEffect } from "react";
 import UserService from "../api/UserService";
-import Adduser from "./AddUser";
+import AddUser from "./AddUser";
 import ImageUpload from "./ImageUpload";
+import LoadingPage from "./Loading";
+
 const UserPage = () => {
-  const [user, setUser] = useState();
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const { getuser } = UserService();
+
   useEffect(() => {
     const getUser = async () => {
       try {
+        setLoading(true);
         const response = await getuser();
         setUser(response.data);
-        console.log(response.data);
       } catch (err) {
-        console.error(err);
+        setError("Failed to fetch user data");
+      } finally {
+        setLoading(false);
       }
     };
     getUser();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  if (loading) {
+    return <LoadingPage />;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
+
   return (
-    <>
+    <div className="bg-gray-100 min-h-screen flex flex-col justify-center items-center">
       {user ? (
-        <div className="bg-gray-100 flex justify-evenly items-center flex-wrap h-full">
-          <div className="flex justify-between items-center">
-            <div className="bg-white shadow rounded-lg p-6">
-              <div className="mt-6 flex flex-wrap gap-4  flex-col">
-                {user?.image ? (
-                  <img
-                    src={`data:image/jpeg;base64,${user?.image}`}
-                    alt="user pic"
-                    className="w-32 h-32 bg-gray-300 rounded-full mb-4 shrink-0"
-                  />
-                ) : (
-                  <ImageUpload />
-                )}
-                {/*  eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                <a
-                  href="#"
-                  className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">
-                  change username
-                </a>
-                {/*  eslint-disable-next-line jsx-a11y/anchor-is-valid */}
-                <a
-                  href="#"
-                  className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">
-                  change password
-                </a>
-              </div>
-              <hr className="my-6 border-t border-gray-300" />
+        <div className="bg-white shadow-lg rounded-lg overflow-hidden w-full max-w-md p-6">
+          <div className="flex flex-col items-center">
+            {user?.image ? (
+              <img
+                src={`data:image/jpeg;base64,${user?.image}`}
+                alt="user pic"
+                className="w-32 h-32 bg-gray-300 rounded-full mb-4"
+              />
+            ) : (
+              <ImageUpload />
+            )}
+            <button
+              // eslint-disable-next-line no-undef
+              onClick={triggerFileInput}
+              className="bg-blue-500 text-white px-2 py-1 text-xs rounded cursor-pointer hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-300 mt-2">
+              Change Profile Picture
+            </button>
+          </div>
+          <div className="mt-6">
+            <h2 className="font-semibold text-center text-lg mb-4">
+              User Details
+            </h2>
+            <div className="space-y-2 text-gray-600">
+              <p className="flex justify-between">
+                <span className="font-bold">Name:</span>
+                {user?.name}
+              </p>
+              <p className="flex justify-between">
+                <span className="font-bold">Email:</span>
+                {user?.email}
+              </p>
+              <p className="flex justify-between">
+                <span className="font-bold">Phone:</span>
+                {user?.phone}
+              </p>
+              <p className="flex justify-between">
+                <span className="font-bold">Address:</span>
+                {user?.address}
+              </p>
+              <p className="flex justify-between">
+                <span className="font-bold">Username:</span>
+                {user?.username}
+              </p>
             </div>
           </div>
-          <div className="col-span-4 sm:col-span-6">
-            <div className="bg-white shadow rounded-lg p-6">
-              <h2 className="font-semibold text-center mt-3 -mb-2 text-black my-4 py-5">
-                User Details
-              </h2>
-              <div className="mb-4">
-                <div className="flex justify-between">
-                  <span className="text-gray-600 font-bold">Name : </span>
-                  <p>
-                    <span className="text-gray-600 justify-start">
-                      {user?.name}
-                    </span>
-                  </p>
-                </div>
-              </div>
-              <div className="mb-6">
-                <div className="flex justify-between">
-                  <span className="text-gray-600 font-bold">Email : </span>
-                  <p>
-                    <span className="text-gray-600 mr-2">{user?.email}</span>
-                  </p>
-                </div>
-              </div>
-              <div className="mb-6">
-                <div className="flex justify-between">
-                  <span className="text-gray-600 font-bold">Phone : </span>
-                  <p>
-                    <span className="text-gray-600 mr-2">{user?.phone}</span>
-                  </p>
-                </div>
-              </div>
-              <div className="mb-6">
-                <div className="flex justify-between">
-                  <span className="text-gray-600 font-bold">Adress : </span>
-                  <p>
-                    <span className="text-gray-600 mr-2">{user?.address}</span>
-                  </p>
-                </div>
-              </div>
-              <div className="mb-6">
-                <div className="flex justify-between">
-                  <span className="text-gray-600 font-bold">username : </span>
-                  <p>
-                    <span className="text-gray-600 mr-2">{user?.username}</span>
-                  </p>
-                </div>
-              </div>
-            </div>
+          <div className="mt-6 flex space-x-2">
+            <button
+              onClick={""}
+              className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">
+              Change Username
+            </button>
+            <button
+              onClick={""}
+              className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">
+              Change Password
+            </button>
           </div>
         </div>
       ) : (
-        <Adduser />
+        <AddUser />
       )}
-    </>
+    </div>
   );
 };
 

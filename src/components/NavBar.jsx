@@ -6,8 +6,9 @@ import { FaUserAlt } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import useToggle from "../Hooks/useToggle";
 import useAuth from "../Hooks/useAuth";
+import ThemeSwitch from "../Hooks/ThemeSwitch";
 
-const NavBar = () => {
+const NavBar = ({ theme }) => {
   const { auth } = useAuth();
   const navigate = useNavigate();
   const [check, toggleCheck] = useToggle("profile", false);
@@ -26,7 +27,6 @@ const NavBar = () => {
   const { getuser } = UserService();
   const [image, setImage] = useState();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
   useEffect(() => {
     // eslint-disable-next-line
     const getImage = async () => {
@@ -40,242 +40,124 @@ const NavBar = () => {
     // getImage();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
   return (
-    <div>
-      <nav className="bg-yellow-500 p-4 text-white">
-        <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
-          <div className="relative flex h-16 items-center justify-between">
-            <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
-              {/* Mobile menu button*/}
-              <button
-                type="button"
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="relative inline-flex items-center justify-center rounded-md p-2 text-blue-400 hover:bg-blue-700 hover:text-white focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
-                aria-controls="mobile-menu"
-                aria-expanded="false">
-                <span className="absolute -inset-0.5"></span>
-                <span className="sr-only">Open main menu</span>
-                {isMobileMenuOpen ? (
-                  <svg
-                    className="block h-6 w-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="1.5"
-                    stroke="currentColor"
-                    aria-hidden="true">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
-                ) : (
-                  <svg
-                    className="block h-6 w-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="1.5"
-                    stroke="currentColor"
-                    aria-hidden="true">
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5"
-                    />
-                  </svg>
-                )}
-              </button>
-            </div>
-            <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-              {/* eslint-disable-next-line */}
-              <a
-                className="flex flex-shrink-0 items-center hover:cursor-pointer text-white"
-                onClick={() => navigate("/")}>
-                <PiShoppingCartFill />
-                SHOP
-              </a>
-              <div className="hidden sm:ml-6 sm:block">
-                <div className="flex space-x-4">
-                  {/* Current: "bg-blue-900 text-white", Default: "text-blue-300 hover:bg-blue-700 hover:text-white" */}
-                  <a
-                    href="/"
-                    className="hover:bg-gray-700 active:bg-gray-600 text-white rounded-md px-3 py-2 text-sm font-medium"
-                    aria-current="page">
-                    Home
-                  </a>
-                  {/* eslint-disable-next-line */}
-                  <a
-                    onClick={() => navigate("/cart")}
-                    className="hover:cursor-pointer text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-white rounded-md px-3 py-2 text-sm font-medium">
-                    Cart
-                  </a>
-                  {/* eslint-disable-next-line */}
-                  <a
-                    onClick={() => navigate("/orders")}
-                    className="hover:cursor-pointer text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-white rounded-md px-3 py-2 text-sm font-medium">
-                    Orders
-                  </a>
-                  {user && JSON.stringify(User).match("admin") && auth && (
-                    <>
-                      <a
-                        href="/admin"
-                        className="hover:cursor-pointer text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-white rounded-md px-3 py-2 text-sm font-medium">
-                        Admin
-                      </a>
-                      {/* eslint-disable-next-line */}
-                      <a
-                        href="#"
-                        className="hover:cursor-pointer text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-white rounded-md px-3 py-2 text-sm font-medium">
-                        Product
-                      </a>
-                    </>
-                  )}
-                </div>
-              </div>
-            </div>
-
-            <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-              {/* <button
-                type="button"
-                className="relative rounded-full bg-blue-800 p-1 text-blue-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-800">
-                <span className="absolute -inset-1.5"></span>
-                <span className="sr-only">View notifications</span>
-                <svg
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth="1.5"
-                  stroke="currentColor"
-                  aria-hidden="true">
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0"
-                  />
-                </svg>
-              </button> */}
-
-              {/* Profile dropdown */}
-              <div className="relative ml-3">
-                <div>
-                  <button
-                    type="button"
-                    onClick={toggleCheck}
-                    className="p-0 rounded-full bg-blue-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-800"
-                    id="user-menu-button"
-                    aria-expanded="false"
-                    aria-haspopup="true">
-                    <span className="absolute -inset-1.5"></span>
-                    <span className="sr-only">Open user menu</span>
-                    {image ? (
-                      <img
-                        className=" w-10 h-10 rounded-full"
-                        src={`data:image/jpeg;base64,${image}`}
-                        alt="user pic"
-                      />
-                    ) : (
-                      <FaUserAlt />
-                    )}
-                  </button>
-                </div>
-
-                {/*
-            Dropdown menu, show/hide based on menu state.
-
-            Entering: "transition ease-out duration-100"
-              From: "transform opacity-0 scale-95"
-              To: "transform opacity-100 scale-100"
-            Leaving: "transition ease-in duration-75"
-              From: "transform opacity-100 scale-100"
-              To: "transform opacity-0 scale-95"
-          */}
-
-                {check && (
-                  <div
-                    id="dropdown"
-                    className=" absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
-                    role="menu"
-                    aria-orientation="vertical"
-                    aria-labelledby="user-menu-button"
-                    tabIndex="-1">
-                    <ul>
-                      <li>
-                        {/* eslint-disable-next-line */}
-                        <a
-                          onClick={user}
-                          className="block px-4 py-2 text-sm text-blue-700 hover:cursor-pointer"
-                          role="menuitem"
-                          tabIndex="-1"
-                          id="user-menu-item-0">
-                          Your Profile
-                        </a>
-                      </li>
-                      <li>
-                        {/* eslint-disable-next-line */}
-                        <a
-                          onClick={signOut}
-                          className="block px-4 py-2 text-sm text-blue-700 hover:cursor-pointer"
-                          role="menuitem"
-                          tabIndex="-1"
-                          id="user-menu-item-1">
-                          Sign out
-                        </a>
-                      </li>
-                    </ul>
-                  </div>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/*  Mobile menu, show/hide based on menu state.  */}
-        {isMobileMenuOpen && (
-          <div className="sm:hidden" id="mobile-menu">
-            <div className="space-y-1 px-2 pb-3 pt-2">
-              {/*  Current: "bg-blue-900 text-white", Default: "text-blue-300 hover:bg-blue-700 hover:text-white"  */}
+    <div className={theme}>
+      <nav
+        className={`bg-${
+          theme === "light" ? "white" : "gray-900"
+        } p-4 text-white flex flex-wrap items-center justify-between`}>
+        <div className="flex items-center">
+          {/* eslint-disable-next-line */}
+          <a
+            className="flex items-center text-white"
+            onClick={() => navigate("/")}>
+            <PiShoppingCartFill />
+            SHOP
+          </a>
+          <div className="hidden sm:ml-6 sm:block">
+            <div className="flex space-x-4">
+              {/* Current: "bg-blue-900 text-white", Default: "text-blue-300 hover:bg-blue-700 hover:text-white" */}
               <a
                 href="/"
-                className="text-blue-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium"
+                className="hover:bg-gray-700 active:bg-gray-600 text-white rounded-md px-3 py-2 text-sm font-medium"
                 aria-current="page">
                 Home
               </a>
               {/* eslint-disable-next-line */}
               <a
-                href="#"
                 onClick={() => navigate("/cart")}
-                className="text-blue-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">
+                className="hover:cursor-pointer text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-white rounded-md px-3 py-2 text-sm font-medium">
                 Cart
               </a>
               {/* eslint-disable-next-line */}
               <a
-                href="#"
                 onClick={() => navigate("/orders")}
-                className="text-blue-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">
+                className="hover:cursor-pointer text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-white rounded-md px-3 py-2 text-sm font-medium">
                 Orders
               </a>
-              {/* eslint-disable-next-line */}
-
               {user && JSON.stringify(User).match("admin") && auth && (
                 <>
+                  {/* eslint-disable-next-line */}
                   <a
-                    href="/admin"
-                    className="text-blue-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">
+                    onClick={() => navigate("/admin")}
+                    className="hover:cursor-pointer text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-white rounded-md px-3 py-2 text-sm font-medium">
                     Admin
                   </a>
 
                   {/* eslint-disable-next-line */}
                   <a
                     href="#"
-                    className="text-blue-300 hover:bg-gray-700 hover:text-white block rounded-md px-3 py-2 text-base font-medium">
+                    className="hover:cursor-pointer text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-white rounded-md px-3 py-2 text-sm font-medium">
                     Product
                   </a>
                 </>
               )}
             </div>
           </div>
-        )}
+        </div>
+
+        <div className="flex items-center">
+          <ThemeSwitch />
+          {/* Profile dropdown */}
+          <div className="relative ml-3">
+            <div>
+              <button
+                type="button"
+                onClick={toggleCheck}
+                className="p-0 rounded-full bg-blue-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-800"
+                id="user-menu-button"
+                aria-expanded="false"
+                aria-haspopup="true">
+                <span className="absolute -inset-1.5"></span>
+                <span className="sr-only">Open user menu</span>
+                {image ? (
+                  <img
+                    className=" w-10 h-10 rounded-full"
+                    src={`data:image/jpeg;base64,${image}`}
+                    alt="user pic"
+                  />
+                ) : (
+                  <FaUserAlt />
+                )}
+              </button>
+            </div>
+
+            {check && (
+              <div
+                id="dropdown"
+                className=" absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+                role="menu"
+                aria-orientation="vertical"
+                aria-labelledby="user-menu-button"
+                tabIndex="-1">
+                <ul>
+                  <li>
+                    {/* eslint-disable-next-line */}
+                    <a
+                      onClick={user}
+                      className="block px-4 py-2 text-sm text-blue-700 hover:cursor-pointer"
+                      role="menuitem"
+                      tabIndex="-1"
+                      id="user-menu-item-0">
+                      Your Profile
+                    </a>
+                  </li>
+                  <li>
+                    {/* eslint-disable-next-line */}
+                    <a
+                      onClick={signOut}
+                      className="block px-4 py-2 text-sm text-blue-700 hover:cursor-pointer"
+                      role="menuitem"
+                      tabIndex="-1"
+                      id="user-menu-item-1">
+                      Sign out
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            )}
+          </div>
+        </div>
       </nav>
     </div>
   );

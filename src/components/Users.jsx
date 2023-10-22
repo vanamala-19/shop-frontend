@@ -9,17 +9,17 @@ import UserService from "../api/UserService";
 const Users = () => {
   const [page, setPage] = useState(1);
   const navigate = useNavigate();
-  const [Users, setUsers] = useState(null);
+  const [users, setUsers] = useState([]);
   const axiosPrivate = useAxiosPrivate();
   const location = useLocation();
-  const [users, setusers] = useState([]);
   const { getAllUsers } = UserService();
+  const itemsPerPage = 10;
 
   useEffect(() => {
     const getuser = async () => {
       try {
         const response = await getAllUsers();
-        setusers(response.data);
+        setUsers(response.data);
       } catch (err) {
         console.error(err);
         navigate("/", { state: { from: location }, replace: true });
@@ -37,13 +37,14 @@ const Users = () => {
   const deleteUser = (e, id) => {
     e.preventDefault();
     axiosPrivate.deleteUser("/user/delete/" + id).then((res) => {
-      if (Users) {
+      if (users) {
         setUsers((prevElement) => {
           return prevElement.filter((User) => User.custId !== id);
         });
       }
     });
   };
+
   let filteredUsers = null;
   if (users?.length) {
     filteredUsers = users
@@ -62,6 +63,10 @@ const Users = () => {
           : 1 * order;
       });
   }
+
+  const startIndex = (page - 1) * itemsPerPage;
+  const endIndex = startIndex + itemsPerPage;
+  const paginatedUsers = filteredUsers.slice(startIndex, endIndex);
 
   return (
     <div className="container mx-auto my-8">
@@ -102,7 +107,7 @@ const Users = () => {
           </thead>
           {users.length ? (
             <tbody className="bg-white">
-              {filteredUsers.map((User, i) => (
+              {paginatedUsers.map((User, i) => (
                 <UsersTable
                   User={User}
                   deleteUser={deleteUser}

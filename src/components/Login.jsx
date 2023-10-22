@@ -1,9 +1,10 @@
-import { useRef, useState, useEffect } from "react";
+import { useState, useRef, useEffect } from "react";
 import axios from "../api/axios";
 import useAuth from "../Hooks/useAuth";
 import { useNavigate, useLocation } from "react-router-dom";
 import useToggle from "../Hooks/useToggle";
 import useInput from "../Hooks/useInput";
+import LoadingPage from "./Loading";
 
 const LOGIN_URL = "/auth/login";
 
@@ -20,6 +21,7 @@ const Login = () => {
   const [user, resetUser, userAttribute] = useInput("userName", "");
   const [pwd, setPwd] = useState("");
   const [errMsg, setErrMsg] = useState("");
+  const [loading, setLoading] = useState(false);
   const [check, toggleCheck] = useToggle("persist", false);
 
   useEffect(() => {
@@ -30,16 +32,9 @@ const Login = () => {
     setErrMsg("");
   }, [user, pwd]);
 
-  // const togglePersist = () => {
-  //   setPersist((prev) => !prev);
-  // };
-  // useEffect(() => {
-  //   localStorage.setItem("persist", persist);
-  // }, [persist]);
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setLoading(true);
     try {
       const response = await axios.post(
         LOGIN_URL,
@@ -66,8 +61,14 @@ const Login = () => {
         setErrMsg("Login Failed!");
       }
       errRef.current.focus();
+    } finally {
+      setLoading(false);
     }
   };
+
+  if (loading) {
+    return <LoadingPage />;
+  }
 
   return (
     <div className="body">
@@ -98,7 +99,7 @@ const Login = () => {
             value={pwd}
             required
           />
-          <button>Sign In</button>
+          <button disabled={loading}>Sign In</button>
           <div className="persistCheck">
             <input
               type="checkbox"

@@ -1,5 +1,3 @@
-// i have changed the front end and backend
-// front end
 import React, { useEffect, useState } from "react";
 import useAxiosPrivate from "../Hooks/useAxiosPrivate";
 
@@ -75,7 +73,7 @@ const Cart = () => {
   }, []);
 
   return (
-    <div>
+    <div className="dark:bg-dark dark:text-white bg-light text-dark">
       {alert.message && (
         <div
           style={{
@@ -134,4 +132,3 @@ const Cart = () => {
 };
 
 export default Cart;
-// backend

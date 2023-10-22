@@ -13,13 +13,60 @@ html {
   font-family: "Nunito", sans-serif;
   font-size: 22px;
   color: #fff;
+  margin: 0;
+}
+
+/* styles.css */
+a {
+  color: var(--text-color);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--link-hover-color);
+  text-decoration: underline;
+}
+
+/* styles.css */
+.navbar-light {
+  background-color: #f8f9fa !important;
+  color: #495057;
+}
+
+.navbar-dark {
+  background-color: #343a40 !important;
+  color: #ffffff;
+}
+/* styles.css */
+/* styles.css */
+/* styles.css */
+.dark {
+  --bg-color: #333;
+  --text-color: #fff;
+  --link-hover-color: #ddd;
+}
+
+.light {
+  --bg-color: #fff;
+  --text-color: #000;
+  --link-hover-color: #333;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span,
+a {
+  color: var(--text-color);
 }
 
 body {
-  min-height: 100vh;
-  /* background-color: #add8e6; */
-  /* background-color: #8b0000; */
-  background-color: #ffd700;
+  background-color: var(--bg-color);
+  color: var(--text-color);
 }
 
 /* Add this CSS rule  for images in products*/
@@ -56,7 +103,7 @@ section {
   flex-direction: column;
   justify-content: flex-start;
   padding: 1rem;
-  background-color: rgba(0, 0, 0, 0.4);
+  /* background-color: rgba(0, 0, 0, 0.4); */
 }
 form {
   display: flex;
@@ -209,4 +256,63 @@ li {
 
 .add-to-cart-button:hover {
   background-color: #0056b3;
+}
+
+/* Style for the switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Style the slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  transition: 0.4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: #2196f3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196f3;
+}
+
+input:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
 }
