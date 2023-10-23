@@ -66,7 +66,7 @@ const Users = () => {
 
   const startIndex = (page - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const paginatedUsers = filteredUsers.slice(startIndex, endIndex);
+  const paginatedUsers = filteredUsers?.slice(startIndex, endIndex);
 
   return (
     <div className="container mx-auto my-8">
