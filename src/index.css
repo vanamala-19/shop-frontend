@@ -41,6 +41,23 @@ a:hover {
   --text-color: #000;
   --link-hover-color: #333;
 }
+.navbar {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  /* border-bottom: 2px solid white var(--text-color); */
+}
+.navbar:hover a {
+  background: var(--link-hover-color);
+}
+.navbar a {
+  background-color: var(--text-color);
+  color: var(--text-color);
+}
+
+.navbar svg path {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
 
 h1,
 h2,
@@ -52,9 +69,7 @@ p,
 span,
 label,
 a {
-  color: var(--text-color);
-}
-nav a {
+  /* background-color: var(--bg-color); */
   color: var(--text-color);
 }
 article h3 a span {
