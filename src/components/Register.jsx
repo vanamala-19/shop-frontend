@@ -7,6 +7,7 @@ const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 const REGISTER_URL = "auth/register";
 
 const Register = () => {
+  document.title = "SHOP | REGISTER";
   const userRef = useRef();
   const errRef = useRef();
 

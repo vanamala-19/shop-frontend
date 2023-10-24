@@ -56,10 +56,10 @@ const AddUser = () => {
       );
       setLoading(false);
       console.log(response);
-      navigate("/users");
+      navigate("/user");
     } catch (err) {
       console.error(err);
-      navigate("/users");
+      navigate("/user");
     }
   };
 

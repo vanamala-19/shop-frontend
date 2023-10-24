@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import UserService from "../api/UserService";
 import useLogout from "./useLogout";
-import { PiShoppingCartFill } from "react-icons/pi";
 import { FaUserAlt } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import useToggle from "../Hooks/useToggle";
@@ -87,14 +86,7 @@ const NavBar = () => {
                 )}
               </button>
             </div>
-            <div className="flex flex-1 items-center justify-center sm:items-stretch sm:justify-start">
-              {/* eslint-disable-next-line */}
-              <a
-                className="flex flex-shrink-0 items-center hover:cursor-pointer"
-                onClick={() => navigate("/")}>
-                <PiShoppingCartFill />
-                SHOP
-              </a>
+            <div className="flex-1 items-center justify-center sm:items-stretch sm:justify-start hidden lg:block">
               {/* eslint-disable-next-line */}
               <a
                 onClick={() => navigate("/")}
@@ -115,6 +107,7 @@ const NavBar = () => {
               </a>
               {user && JSON.stringify(User).match("admin") && auth && (
                 <>
+                  {/* eslint-disable-next-line */}
                   <a
                     onClick={() => navigate("/admin")}
                     className="hover:cursor-pointer  focus:outline-none focus:ring-2 focus:ring-white rounded-md px-3 py-2 text-sm font-medium">

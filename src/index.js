@@ -4,7 +4,7 @@ import "./index.css";
 import ThemeProvider from "./context/ThemeProvider";
 import App from "./App";
 import { AuthProvider } from "./context/AuthProvider";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import { disableReactDevTools } from "@fvilers/disable-react-devtools";
 if (process.env.NODE_ENV === "production") {
   disableReactDevTools();

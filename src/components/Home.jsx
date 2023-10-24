@@ -32,7 +32,7 @@ const Home = () => {
   const [allBrands, setAllBrands] = useState();
   const [sortBy, setSortBy] = useState();
   const [sortDir, setSortDir] = useState();
-
+  document.title = "SHOP | HOME";
   useEffect(() => {
     searchParams.set("page", page.toString());
     setSearchParams(searchParams);

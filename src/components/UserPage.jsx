@@ -11,6 +11,8 @@ const UserPage = () => {
   const [changeImg, setChangeImg] = useState(false);
   const { getuser } = UserService();
 
+  document.title = "SHOP | USER";
+
   useEffect(() => {
     const getUser = async () => {
       try {
@@ -18,12 +20,15 @@ const UserPage = () => {
         const response = await getuser();
         setUser(response.data);
       } catch (err) {
-        setError("Failed to fetch user data");
+        if (err.response?.status !== 404) {
+          setError("Failed to fetch user data");
+        }
       } finally {
         setLoading(false);
       }
     };
     getUser();
+    // eslint-disable-next-line
   }, []);
 
   if (loading) {
@@ -35,9 +40,9 @@ const UserPage = () => {
   }
 
   return (
-    <div className="bg-gray-100 min-h-screen flex flex-col justify-center items-center">
+    <div className=" min-h-screen flex flex-col justify-center items-center">
       {user ? (
-        <div className="bg-white shadow-lg rounded-lg overflow-hidden w-full max-w-md p-6">
+        <div className=" shadow-lg rounded-lg overflow-hidden w-full max-w-md p-6">
           <div className="flex flex-col items-center">
             {user?.image || !changeImg ? (
               <img
@@ -84,7 +89,7 @@ const UserPage = () => {
           </div>
           <div className="mt-6 flex space-x-2">
             <button
-              onClick={""}
+              onClick={user}
               className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded">
               Change Username
             </button>

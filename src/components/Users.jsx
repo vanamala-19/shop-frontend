@@ -15,6 +15,8 @@ const Users = () => {
   const { getAllUsers } = UserService();
   const itemsPerPage = 10;
 
+  document.title = "SHOP | aDMIN";
+
   useEffect(() => {
     const getuser = async () => {
       try {

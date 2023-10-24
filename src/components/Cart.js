@@ -7,7 +7,7 @@ const Cart = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [selectedImage, setSelectedImage] = useState(null);
   const [alert, setAlert] = useState({ message: "", type: "" });
-
+  document.title = "SHOP | CART";
   const getImage = async () => {
     return await fetch("https://dummyjson.com/products?limit=100&skip=0")
       .then((res) => res.json())

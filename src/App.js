@@ -17,7 +17,7 @@ import React, { useContext } from "react";
 import ThemeContext from "./context/ThemeContext";
 function App() {
   const { theme } = useContext(ThemeContext);
-
+  document.title = "SHOP";
   const lightStyle = {
     backgroundColor: "#fff",
     color: "#000",
@@ -44,9 +44,9 @@ function App() {
               <Route path="/addUser" element={<AddUser />} />
               <Route path="/orders" element={<Orders />} />
               <Route path="/product/:id" element={<ProductPage />} />
+              <Route path="/cart" element={<Cart />} />
             </Route>
             <Route element={<RequireAuth allowedRoles={["ADMIN"]} />}>
-              <Route path="/cart" element={<Cart />} />
               <Route path="/admin" element={<Users />} />
             </Route>
           </Route>

@@ -23,7 +23,7 @@ const Login = () => {
   const [errMsg, setErrMsg] = useState("");
   const [loading, setLoading] = useState(false);
   const [check, toggleCheck] = useToggle("persist", false);
-
+  document.title = "SHOP | lOGIN";
   useEffect(() => {
     userRef.current.focus();
   }, []);
