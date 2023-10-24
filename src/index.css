@@ -132,7 +132,6 @@ a:visited {
 
 input[type="text"],
 input[type="password"],
-button,
 textarea {
   font-family: "Nunito", sans-serif;
   font-size: 22px;
@@ -259,15 +258,15 @@ li {
 
 .add-to-cart-button {
   padding: 10px 20px;
-  background-color: #007bff;
-  color: #fff;
+  background-color: var(--text-color);
+  color: var(--bg-color);
   border: none;
   border-radius: 5px;
   cursor: pointer;
 }
 
 .add-to-cart-button:hover {
-  background-color: #0056b3;
+  background-color: var(--link-hover-color);
 }
 
 /* Style for the switch - the box around the slider */

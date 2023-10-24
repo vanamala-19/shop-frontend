@@ -17,17 +17,25 @@ const DropDown = ({
   setToggleMain,
 }) => {
   const dropDownRef = useRef();
+  const [close, setClose] = useState(false);
 
   useEffect(() => {
     if (toggle && dropDownRef.current) {
       dropDownRef.current.scrollTop = dropDownRef.current.scrollHeight;
     }
     // eslint-disable-next-line
-  }, [toggle, query, searchType]);
+    if (close) {
+      setToggleMain(false);
+    }
+  }, [toggle, close, query, searchType]);
 
+  // useEffect(() => {
+  //   // eslint-disable-next-line
+  // }, [close]);
   if (!toggle) {
     return null;
   }
+
   return (
     <div
       className="z-50 origin-top-right absolute right-0 mt-2 w-56
@@ -63,17 +71,20 @@ const DropDown = ({
                   setSortBy("rating");
                   setSortDir("desc");
                 }
+                setClose(true);
+                onChangeAction();
               } else if (choice === "Brand") {
                 setQuery(option);
                 setSearchType(choice);
-                setToggleMain(!toggle);
+                setClose(true);
+                onChangeAction();
               } else if (choice === "Category") {
                 setQuery(option);
                 setSearchType(choice);
-                setToggleMain(!toggle);
+                setClose(true);
+                onChangeAction();
               }
 
-              onChangeAction();
               onSelectOption(option);
               setToggleMain(true);
             }}
@@ -146,7 +157,7 @@ const Search = ({
           onChange={(event) => {
             setQuery(event.target.value);
           }}
-          className="my-4 pl-8 rounded-md focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-gray-300 "
+          className="my-4 pl-8 rounded-md focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-black "
           placeholder="Search Products"
         />
         <button

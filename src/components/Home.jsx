@@ -12,6 +12,7 @@ const Home = () => {
   const location = useLocation();
   const [trigger, setTrigger] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const [noProductsFound, setNoProductsFound] = useState(false);
   const {
     getAllProducts,
@@ -32,6 +33,7 @@ const Home = () => {
   const [allBrands, setAllBrands] = useState();
   const [sortBy, setSortBy] = useState();
   const [sortDir, setSortDir] = useState();
+
   document.title = "SHOP | HOME";
   useEffect(() => {
     searchParams.set("page", page.toString());
@@ -39,6 +41,8 @@ const Home = () => {
     const getAllProduct = async () => {
       const size = 8;
       try {
+        setLoading(true);
+        console.log("Loading starting...");
         let response;
 
         if (searchType === "Name" && query) {
@@ -73,7 +77,13 @@ const Home = () => {
         setIsLast(response?.lastPage);
         setTotalPages(response?.totalPages);
       } catch (err) {
-        navigate("/login", { state: { from: location }, replace: true });
+        if (err?.response?.status === 401) {
+          navigate("/login", { state: { from: location }, replace: true });
+        }
+        setError("Failed to fetch user data");
+      } finally {
+        setLoading(false);
+        console.log("Loading stopped...");
       }
     };
 
@@ -89,19 +99,18 @@ const Home = () => {
     getBrand();
     getCategory();
     getAllProduct();
-    // Set loading to false and display "No products found" message after a delay
-    const loadingTimeout = setTimeout(() => {
-      setLoading(false);
-      setNoProductsFound(product.length === 0);
-    }, 500); // 5 seconds delay
-
-    return () => clearTimeout(loadingTimeout);
     // eslint-disable-next-line
-  }, [page, searchType, trigger, product.length]);
+  }, [page, trigger, searchType]);
 
   const handleSearchTypeChange = (newSearchType) => {
     setSearchType(newSearchType);
   };
+  if (loading) {
+    return <LoadingPage />;
+  }
+  if (error) {
+    return <p>{error}</p>;
+  }
 
   return (
     <div className="dark:bg-dark dark:text-white bg-light text-dark mx-auto max-w-screen-lg px-5 py-5">
@@ -128,15 +137,9 @@ const Home = () => {
         }}
       />
       <main className="grid grid-cols-2 gap-x-6 gap-y-10 px-2 pb-20 sm:grid-cols-3 sm:px-8 lg:mt-16 lg:grid-cols-4 lg:gap-x-4 lg:px-0">
-        {loading ? (
-          <LoadingPage />
-        ) : noProductsFound ? (
-          <div>No products found</div>
-        ) : (
-          product?.map((product, i) => (
-            <ProductCard key={i} product={product} />
-          ))
-        )}
+        {product?.map((product, i) => (
+          <ProductCard key={i} product={product} />
+        ))}
       </main>
       <Pagination
         setPage={setPage}

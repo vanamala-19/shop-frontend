@@ -86,7 +86,7 @@ const NavBar = () => {
                 )}
               </button>
             </div>
-            <div className="flex-1 items-center justify-center sm:items-stretch sm:justify-start hidden lg:block">
+            <div className="flex-1 items-center justify-center sm:items-stretch sm:justify-start hidden md:block">
               {/* eslint-disable-next-line */}
               <a
                 onClick={() => navigate("/")}
@@ -208,20 +208,29 @@ const NavBar = () => {
             <div className="space-y-1 px-2 pb-3 pt-2">
               {/* eslint-disable-next-line */}
               <a
-                onClick={() => navigate("/")}
+                onClick={() => {
+                  navigate("/");
+                  setIsMobileMenuOpen(!isMobileMenuOpen);
+                }}
                 className="  block rounded-md px-3 py-2 text-base font-medium"
                 aria-current="page">
                 Home
               </a>
               {/* eslint-disable-next-line */}
               <a
-                onClick={() => navigate("/cart")}
+                onClick={() => {
+                  navigate("/cart");
+                  setIsMobileMenuOpen(!isMobileMenuOpen);
+                }}
                 className="   block rounded-md px-3 py-2 text-base font-medium">
                 Cart
               </a>
               {/* eslint-disable-next-line */}
               <a
-                onClick={() => navigate("/orders")}
+                onClick={() => {
+                  navigate("/orders");
+                  setIsMobileMenuOpen(!isMobileMenuOpen);
+                }}
                 className="  block rounded-md px-3 py-2 text-base font-medium">
                 Orders
               </a>
@@ -229,15 +238,22 @@ const NavBar = () => {
 
               {user && JSON.stringify(User).match("admin") && auth && (
                 <>
+                  {/* eslint-disable-next-line */}
                   <a
-                    href="/admin"
+                    onClick={() => {
+                      navigate("/admin");
+                      setIsMobileMenuOpen(!isMobileMenuOpen);
+                    }}
                     className="  block rounded-md px-3 py-2 text-base font-medium">
                     Admin
                   </a>
 
                   {/* eslint-disable-next-line */}
                   <a
-                    href="#"
+                    onClick={() => {
+                      navigate("/product");
+                      setIsMobileMenuOpen(!isMobileMenuOpen);
+                    }}
                     className=" block rounded-md px-3 py-2 text-base font-medium">
                     Product
                   </a>

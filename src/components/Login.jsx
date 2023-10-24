@@ -45,7 +45,6 @@ const Login = () => {
         }
       );
       const accessToken = response?.data;
-      console.log(accessToken);
       setAuth({ user, accessToken });
       resetUser();
       setPwd("");
