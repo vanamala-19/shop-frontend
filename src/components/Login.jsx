@@ -25,7 +25,7 @@ const Login = () => {
   const [check, toggleCheck] = useToggle("persist", false);
   document.title = "SHOP | lOGIN";
   useEffect(() => {
-    userRef.current.focus();
+    userRef?.current?.focus();
   }, []);
 
   useEffect(() => {
@@ -60,7 +60,7 @@ const Login = () => {
       } else {
         setErrMsg("Login Failed!");
       }
-      errRef.current.focus();
+      errRef?.current?.focus();
     } finally {
       setLoading(false);
     }
