@@ -2,10 +2,8 @@ import { useState } from "react";
 import upload from "../Image/upload.png";
 import useAxiosPrivate from "../Hooks/useAxiosPrivate";
 import LoadingPage from "./Loading";
-import { useNavigate } from "react-router-dom";
 
 const ImageUpload = ({ url }) => {
-  const navigate = useNavigate();
   const username = localStorage.getItem("user");
   const [loading, setLoading] = useState(false);
   const axiosPrivate = useAxiosPrivate();
@@ -23,6 +21,7 @@ const ImageUpload = ({ url }) => {
         headers: { "Content-Type": "multipart/form-data" },
         withCredentials: true,
       });
+      console.log(response);
     } catch (err) {
       console.error(err);
     } finally {

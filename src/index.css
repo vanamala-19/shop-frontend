@@ -91,6 +91,12 @@ p {
   color: var(--text-color);
 }
 
+.light-reverse {
+  color: #000;
+}
+.dark-reverse {
+  color: #fff;
+}
 .btn-light {
   background-color: #333;
   color: #fff;
