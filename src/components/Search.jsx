@@ -1,7 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import { BiSearch, BiCaretDown } from "react-icons/bi";
+import { useContext } from "react";
+import ThemeContext from "../context/ThemeContext";
 
 const DropDown = ({
+  theme,
   setSortBy,
   setSortDir,
   searchType,
@@ -38,8 +41,8 @@ const DropDown = ({
 
   return (
     <div
-      className="z-50 origin-top-right absolute right-0 mt-2 w-56
-      rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5"
+      className={`btn-${theme} z-50 origin-top-right absolute right-0 mt-2 w-56
+      rounded-md shadow-lg ring-1 ring-black ring-opacity-5`}
       style={{
         height: "300px",
         overflowY: "auto",
@@ -88,7 +91,7 @@ const DropDown = ({
               onSelectOption(option);
               setToggleMain(true);
             }}
-            className="mx-0 px-0 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 flex justify-center cursor-pointer "
+            className="mx-0 px-0 py-2 text-sm flex justify-center cursor-pointer "
             role="menuitem">
             {option}
           </div>
@@ -112,6 +115,7 @@ const Search = ({
   setSortBy,
   setSortDir,
 }) => {
+  const { theme } = useContext(ThemeContext);
   let [toggleMain, setToggleMain] = useState(false);
   let [toggleBrand, setToggleBrand] = useState(false);
   let [toggleCategory, setToggleCategory] = useState(false);
@@ -145,7 +149,7 @@ const Search = ({
   return (
     <div className="py-5">
       <div className="mt-1 relative rounded-md shadow-sm">
-        <div className="absolute inset-y-0 left-0 pl-3 flex h-6 items-center pointer-events-none">
+        <div className="light dark absolute inset-y-0 left-0 pl-3 flex h-6 items-center pointer-events-none">
           <BiSearch />
           <label htmlFor="query" className="sr-only" />
         </div>
@@ -164,7 +168,7 @@ const Search = ({
           onClick={() => {
             onSearch();
           }}
-          className="px-4 py-2 bg-blue-400 text-sm text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2">
+          className={` btn-${theme} px-4 py-2  focus:outline-none focus:ring-2 focus:ring-offset-2`}>
           Search
         </button>
         <div className="absolute inset-y-0 right-0 flex items-center my-4">
@@ -172,13 +176,14 @@ const Search = ({
             <button
               type="button"
               onClick={() => setToggleMain(!toggleMain)}
-              className="justify-center px-4 py-2 bg-blue-400 border-2 border-blue-400 text-sm text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 flex items-center"
+              className={`btn-${theme} justify-center px-4 py-2 text-sm  focus:outline-none focus:ring-2 focus:ring-offset-2 flex items-center`}
               id="main-menu"
               aria-haspopup="true"
               aria-expanded="true">
               Options <BiCaretDown className="ml-2" />
             </button>
             <DropDown
+              theme={theme}
               setQuery={setQuery}
               setChoice={setChoice}
               setSortBy={setSortBy}
@@ -193,6 +198,7 @@ const Search = ({
               onSelectOption={handleMainOptionSelect}
               setToggleMain={setToggleMain}>
               <DropDown
+                theme={theme}
                 setQuery={setQuery}
                 setChoice={setChoice}
                 setSortBy={setSortBy}
@@ -210,6 +216,7 @@ const Search = ({
                 setToggleMain={setToggleMain}
               />
               <DropDown
+                theme={theme}
                 setChoice={setChoice}
                 setSortBy={setSortBy}
                 setSortDir={setSortDir}
@@ -227,6 +234,7 @@ const Search = ({
                 setToggleMain={setToggleMain}
               />
               <DropDown
+                theme={theme}
                 query={query}
                 setQuery={setQuery}
                 toggle={toggleSort}

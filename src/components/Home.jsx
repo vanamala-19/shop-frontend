@@ -113,7 +113,7 @@ const Home = () => {
   }
 
   return (
-    <div className="dark:bg-dark dark:text-white bg-light text-dark mx-auto max-w-screen-lg px-5 py-5">
+    <div className={` bg-light text-dark mx-auto max-w-screen-lg px-5 py-5`}>
       <Search
         choice={choice}
         setChoice={setChoice}

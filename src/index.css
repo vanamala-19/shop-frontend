@@ -9,6 +9,12 @@
   box-sizing: border-box;
 }
 
+:root {
+  --default-text-color: #000;
+  --default-bg-color: #fff;
+  --default-link-hover-color: #333;
+}
+
 html {
   font-family: "Nunito", sans-serif;
   font-size: 22px;
@@ -59,7 +65,7 @@ a:hover {
   color: var(--text-color);
 }
 
-h1,
+/* h1,
 h2,
 h3,
 h4,
@@ -69,9 +75,9 @@ p,
 span,
 label,
 a {
-  /* background-color: var(--bg-color); */
+  background-color: var(--bg-color);
   color: var(--text-color);
-}
+} */
 article h3 a span {
   color: var(--text-color);
 }
@@ -79,6 +85,27 @@ article h3 a span {
 body {
   background-color: var(--bg-color);
   color: var(--text-color);
+}
+
+p {
+  color: var(--text-color);
+}
+
+.btn-light {
+  background-color: #333;
+  color: #fff;
+  border-color: #fff;
+}
+.text-dark {
+  color: #fff;
+}
+.text-light {
+  color: #000;
+}
+.btn-dark {
+  background-color: #fff;
+  color: #000;
+  border-color: #000;
 }
 
 /* Add this CSS rule  for images in products*/
@@ -136,17 +163,15 @@ textarea {
   font-family: "Nunito", sans-serif;
   font-size: 22px;
   padding: 0.25rem;
-  color: #000;
+  color: var(--bg-color);
+  background-color: var(--text-color);
   border-radius: 0.5rem;
+  border: 1px solid black;
 }
 
 label,
 button {
   margin-top: 1rem;
-}
-
-button {
-  padding: 0.5rem;
 }
 
 li {

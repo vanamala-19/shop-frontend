@@ -1,9 +1,11 @@
 import { useState } from "react";
 import upload from "../Image/upload.png";
 import useAxiosPrivate from "../Hooks/useAxiosPrivate";
+import LoadingPage from "./Loading";
 
 const ImageUpload = ({ url }) => {
   const username = localStorage.getItem("user");
+  const [loading, setLoading] = useState(true);
   const axiosPrivate = useAxiosPrivate();
   const [image, setImage] = useState();
   // const [previewURL, setPreviewURL] = useState("path/to/default/image.jpg"); // path to a default image
@@ -13,6 +15,7 @@ const ImageUpload = ({ url }) => {
     const blob = image.slice(0, image.size);
 
     try {
+      setLoading(true);
       formData.append("image", blob);
       formData.append("username", JSON.parse(username));
       console.log(username);
@@ -23,8 +26,14 @@ const ImageUpload = ({ url }) => {
       console.log(response);
     } catch (err) {
       console.error(err);
+    } finally {
+      setLoading(false);
     }
   };
+
+  if (loading) {
+    return <LoadingPage />;
+  }
 
   return (
     <div className="dark:bg-dark bg-light dark:text-white text-dark">

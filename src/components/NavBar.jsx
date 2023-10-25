@@ -6,11 +6,15 @@ import { useNavigate } from "react-router-dom";
 import useToggle from "../Hooks/useToggle";
 import useAuth from "../Hooks/useAuth";
 import ThemeSwitch from "../Hooks/ThemeSwitch";
+import { useContext } from "react";
+import ThemeContext from "../context/ThemeContext";
 const NavBar = () => {
   const { auth } = useAuth();
   const navigate = useNavigate();
   const [check, toggleCheck] = useToggle("profile", false);
   const logout = useLogout();
+  const { theme } = useContext(ThemeContext);
+
   const signOut = async () => {
     const response = await logout;
     response();
@@ -42,7 +46,7 @@ const NavBar = () => {
 
   return (
     <div>
-      <nav className=" p-4 navbar">
+      <nav className={`text-${theme} p-4 navbar`}>
         <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
           <div className="relative flex h-16 items-center justify-between">
             <div className="absolute inset-y-0 left-0 flex items-center sm:hidden">
@@ -50,8 +54,8 @@ const NavBar = () => {
               <button
                 type="button"
                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-                className="relative inline-flex items-center justify-center rounded-md p-2  focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
-                aria-controls="mobile-menu"
+                className={`text-${theme} relative inline-flex items-center justify-center rounded-md p-2  focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white"
+                aria-controls="mobile-menu`}
                 aria-expanded="false">
                 <span className="absolute -inset-0.5"></span>
                 <span className="sr-only">Open main menu</span>
