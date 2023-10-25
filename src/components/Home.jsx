@@ -13,7 +13,6 @@ const Home = () => {
   const [trigger, setTrigger] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [noProductsFound, setNoProductsFound] = useState(false);
   const {
     getAllProducts,
     getAllProductsByName,

@@ -1,12 +1,15 @@
 import { useRef, useState, useEffect } from "react";
 import { FaCheck, FaTimes, FaInfoCircle } from "react-icons/fa";
 import axios from "../api/axios";
+import { useContext } from "react";
+import ThemeContext from "../context/ThemeContext";
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
 const REGISTER_URL = "auth/register";
 
 const Register = () => {
+  const { theme } = useContext(ThemeContext);
   document.title = "SHOP | REGISTER";
   const userRef = useRef();
   const errRef = useRef();
@@ -81,7 +84,7 @@ const Register = () => {
   };
 
   return (
-    <div className="body">
+    <div className={`body text-${theme}`}>
       {success ? (
         <section>
           <h1>Success!</h1>
@@ -191,6 +194,7 @@ const Register = () => {
             </p>
 
             <button
+              className={`btn-${theme}`}
               disabled={!validName || !validPwd || !validMatch ? true : false}>
               Sign Up
             </button>
@@ -200,7 +204,7 @@ const Register = () => {
             <br />
             <span className="line">
               {/*put router link here*/}
-              <a href="/login">Sign In</a>
+              <button href="/login">Sign In</button>
             </span>
           </p>
         </section>

@@ -5,12 +5,14 @@ import { useNavigate, useLocation } from "react-router-dom";
 import useToggle from "../Hooks/useToggle";
 import useInput from "../Hooks/useInput";
 import LoadingPage from "./Loading";
+import { useContext } from "react";
+import ThemeContext from "../context/ThemeContext";
 
 const LOGIN_URL = "/auth/login";
 
 const Login = () => {
   const { setAuth } = useAuth();
-
+  const { theme } = useContext(ThemeContext);
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/";
@@ -70,7 +72,7 @@ const Login = () => {
   }
 
   return (
-    <div className="body">
+    <div className={`body text-${theme}`}>
       <section>
         <p
           ref={errRef}
@@ -98,7 +100,9 @@ const Login = () => {
             value={pwd}
             required
           />
-          <button disabled={loading}>Sign In</button>
+          <button className={`btn-${theme}`} disabled={loading}>
+            Sign In
+          </button>
           <div className="persistCheck">
             <input
               type="checkbox"
@@ -113,7 +117,7 @@ const Login = () => {
           Need an Account?
           <br />
           <span className="line">
-            <a href="/register">Sign Up</a>
+            <button href="/register">Sign Up</button>
           </span>
         </p>
       </section>

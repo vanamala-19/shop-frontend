@@ -30,6 +30,7 @@ const DropDown = ({
     if (close) {
       setToggleMain(false);
     }
+    //eslint-disable-next-line
   }, [toggle, close, query, searchType]);
 
   // useEffect(() => {
