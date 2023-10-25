@@ -5,6 +5,8 @@ import SimilarProducts from "./SimilarProducts";
 import { useParams } from "react-router-dom";
 import ProductService from "../api/ProductService";
 import LoadingPage from "./Loading";
+import ThemeContext from "../context/ThemeContext";
+import { useContext } from "react";
 
 const ProductPage = () => {
   const [product, setProduct] = useState(null);
@@ -13,7 +15,7 @@ const ProductPage = () => {
   const [similarProducts, setSimilarProducts] = useState([]);
   const { id } = useParams();
   const { getProductById, getAllProductsByCategory } = ProductService();
-
+  const { theme } = useContext(ThemeContext);
   useEffect(() => {
     // // Fetch product details by ID
 
@@ -55,7 +57,7 @@ const ProductPage = () => {
   }
 
   return (
-    <div className="product-details-container">
+    <div className={`product-details-container ${theme}-theme text-${theme}`}>
       <div className="product-details-container">
         <div className="product-details flex flex-col md:flex-row md:items-center">
           <div className="product-image mb-4 md:mb-0 md:w-2/5 md:pr-8">

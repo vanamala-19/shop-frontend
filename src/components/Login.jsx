@@ -50,6 +50,7 @@ const Login = () => {
       setAuth({ user, accessToken });
       resetUser();
       setPwd("");
+      window.location.reload();
       navigate(from, { replace: true });
     } catch (err) {
       if (!err.response) {
@@ -117,7 +118,7 @@ const Login = () => {
           Need an Account?
           <br />
           <span className="line">
-            <button href="/register">Sign Up</button>
+            <button onClick={() => navigate("/register")}>Sign Up</button>
           </span>
         </p>
       </section>

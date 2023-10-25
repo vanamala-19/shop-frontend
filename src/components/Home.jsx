@@ -5,7 +5,8 @@ import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import ProductCard from "./ProductCard";
 import LoadingPage from "./Loading";
 import Pagination from "./Pagination";
-
+import ThemeContext from "../context/ThemeContext";
+import { useContext } from "react";
 const Home = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -13,6 +14,7 @@ const Home = () => {
   const [trigger, setTrigger] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const { theme } = useContext(ThemeContext);
   const {
     getAllProducts,
     getAllProductsByName,
@@ -112,7 +114,8 @@ const Home = () => {
   }
 
   return (
-    <div className={` bg-light text-dark mx-auto max-w-screen-lg px-5 py-5`}>
+    <div
+      className={`${theme}-theme text-${theme} bg-light text-dark mx-auto max-w-screen-lg px-5 py-5`}>
       <Search
         choice={choice}
         setChoice={setChoice}

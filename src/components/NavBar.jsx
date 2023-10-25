@@ -40,7 +40,7 @@ const NavBar = () => {
         console.error(err);
       }
     };
-    // getImage();
+    getImage();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

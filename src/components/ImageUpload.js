@@ -2,14 +2,14 @@ import { useState } from "react";
 import upload from "../Image/upload.png";
 import useAxiosPrivate from "../Hooks/useAxiosPrivate";
 import LoadingPage from "./Loading";
+import { useNavigate } from "react-router-dom";
 
 const ImageUpload = ({ url }) => {
+  const navigate = useNavigate();
   const username = localStorage.getItem("user");
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const axiosPrivate = useAxiosPrivate();
   const [image, setImage] = useState();
-  // const [previewURL, setPreviewURL] = useState("path/to/default/image.jpg"); // path to a default image
-
   const handleUpload = async () => {
     const formData = new FormData();
     const blob = image.slice(0, image.size);
@@ -23,10 +23,10 @@ const ImageUpload = ({ url }) => {
         headers: { "Content-Type": "multipart/form-data" },
         withCredentials: true,
       });
-      console.log(response);
     } catch (err) {
       console.error(err);
     } finally {
+      window.location.reload();
       setLoading(false);
     }
   };

@@ -47,21 +47,23 @@ const UserPage = () => {
       {user ? (
         <div className=" shadow-lg rounded-lg overflow-hidden w-full max-w-md p-6">
           <div className="flex flex-col items-center">
-            {user?.image || !changeImg ? (
-              <img
-                src={`data:image/jpeg;base64,${user?.image}`}
-                alt="user pic"
-                className="w-32 h-32 bg-gray-300 rounded-full mb-4"
-              />
+            {user?.image && !changeImg ? (
+              <>
+                <img
+                  src={`data:image/jpeg;base64,${user?.image}`}
+                  alt="user pic"
+                  className="w-32 h-32 bg-gray-300 rounded-full mb-4"
+                />
+                <button
+                  // eslint-disable-next-line no-undef
+                  onClick={() => setChangeImg(true)}
+                  className={`btn-${theme} px-2 py-1 text-xs rounded cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-300 mt-2`}>
+                  Change Profile Picture
+                </button>
+              </>
             ) : (
               <ImageUpload />
             )}
-            <button
-              // eslint-disable-next-line no-undef
-              onClick={() => setChangeImg(!changeImg)}
-              className={`btn-${theme} px-2 py-1 text-xs rounded cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-300 mt-2`}>
-              Change Profile Picture
-            </button>
           </div>
           <div className={`mt-6 text-${theme}`}>
             <h2 className="font-semibold text-center text-lg mb-4">

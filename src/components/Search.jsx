@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { BiSearch, BiCaretDown } from "react-icons/bi";
 import { useContext } from "react";
 import ThemeContext from "../context/ThemeContext";
+import useInput from "../Hooks/useInput";
 
 const DropDown = ({
   theme,
@@ -121,6 +122,7 @@ const Search = ({
   let [toggleBrand, setToggleBrand] = useState(false);
   let [toggleCategory, setToggleCategory] = useState(false);
   let [toggleSort, setToggleSort] = useState(false);
+  const [search, resetSearch, searchAttribute] = useInput("search", "");
 
   const mainOptions = ["Brand", "Category", "Sort By"];
 
@@ -149,40 +151,51 @@ const Search = ({
 
   return (
     <div className="py-5">
-      <div className="mt-1 relative rounded-md shadow-sm">
-        <div className="light dark absolute inset-y-0 left-0 pl-3 flex h-6 items-center pointer-events-none">
-          <BiSearch />
-          <label htmlFor="query" className="sr-only" />
+      <div className="mt-1 relative rounded-md shadow-sm flex flex-col sm:flex-row items-center">
+        <div className="flex items-center w-full">
+          <input
+            type="text"
+            name="query"
+            id="query"
+            value={search}
+            {...searchAttribute}
+            className={`btn-${theme} pl-8 py-2 rounded-l-md focus:ring-indigo-500 focus:border-indigo-500 block w-full text-sm border-gray-300 border-r-0 sm:border-r`}
+            placeholder="Search Products"
+          />
+          <button
+            onClick={() => {
+              setQuery(search);
+              onSearch();
+            }}
+            className={`btn-${theme} -mt-0 -ml-4 py-2 px-2 bg-blue-400 text-sm text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 rounded-r-md`}>
+            <BiSearch />
+          </button>
         </div>
-        <input
-          type="text"
-          name="query"
-          id="query"
-          // value={query}
-          onChange={(event) => {
-            setQuery(event.target.value);
-          }}
-          className="my-4 pl-8 rounded-md focus:ring-indigo-500 focus:border-indigo-500 block w-full sm:text-sm border-black "
-          placeholder="Search Products"
-        />
-        <button
-          onClick={() => {
-            onSearch();
-          }}
-          className={` btn-${theme} px-4 py-2  focus:outline-none focus:ring-2 focus:ring-offset-2`}>
-          Search
-        </button>
-        <div className="absolute inset-y-0 right-0 flex items-center my-4">
-          <div className="mr-2">
-            <button
-              type="button"
-              onClick={() => setToggleMain(!toggleMain)}
-              className={`btn-${theme} justify-center px-4 py-2 text-sm  focus:outline-none focus:ring-2 focus:ring-offset-2 flex items-center`}
-              id="main-menu"
-              aria-haspopup="true"
-              aria-expanded="true">
-              Options <BiCaretDown className="ml-2" />
-            </button>
+        <div className="flex items-center -mt-0 sm:mt-0 sm:ml-2">
+          <button
+            type="button"
+            onClick={() => setToggleMain(!toggleMain)}
+            className={`btn-${theme} justify-center mt-0 px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 flex items-center`}
+            id="main-menu"
+            aria-haspopup="true"
+            aria-expanded="true">
+            Options <BiCaretDown className="ml-2" />
+          </button>
+          <DropDown
+            theme={theme}
+            setQuery={setQuery}
+            setChoice={setChoice}
+            setSortBy={setSortBy}
+            setSortDir={setSortDir}
+            setSearchType={setSearchType}
+            searchType={searchType}
+            choice={""}
+            onChangeAction={onChangeAction}
+            query={query}
+            toggle={toggleMain}
+            options={mainOptions}
+            onSelectOption={handleMainOptionSelect}
+            setToggleMain={setToggleMain}>
             <DropDown
               theme={theme}
               setQuery={setQuery}
@@ -191,68 +204,52 @@ const Search = ({
               setSortDir={setSortDir}
               setSearchType={setSearchType}
               searchType={searchType}
-              choice={""}
+              choice={"Brand"}
               onChangeAction={onChangeAction}
               query={query}
-              toggle={toggleMain}
-              options={mainOptions}
-              onSelectOption={handleMainOptionSelect}
-              setToggleMain={setToggleMain}>
-              <DropDown
-                theme={theme}
-                setQuery={setQuery}
-                setChoice={setChoice}
-                setSortBy={setSortBy}
-                setSortDir={setSortDir}
-                setSearchType={setSearchType}
-                searchType={searchType}
-                choice={"Brand"}
-                onChangeAction={onChangeAction}
-                query={query}
-                toggle={toggleBrand}
-                options={brands}
-                onSelectOption={(brand) => {
-                  setToggleBrand(false);
-                }}
-                setToggleMain={setToggleMain}
-              />
-              <DropDown
-                theme={theme}
-                setChoice={setChoice}
-                setSortBy={setSortBy}
-                setSortDir={setSortDir}
-                onChangeAction={onChangeAction}
-                query={query}
-                setSearchType={setSearchType}
-                searchType={searchType}
-                toggle={toggleCategory}
-                options={categories}
-                choice={"Category"}
-                setQuery={setQuery}
-                onSelectOption={(category) => {
-                  setToggleCategory(false);
-                }}
-                setToggleMain={setToggleMain}
-              />
-              <DropDown
-                theme={theme}
-                query={query}
-                setQuery={setQuery}
-                toggle={toggleSort}
-                options={sortOptions}
-                choice={"sortBy"}
-                setSearchType={setSearchType}
-                searchType={searchType}
-                onChangeAction={onChangeAction}
-                setSortBy={setSortBy}
-                setSortDir={setSortDir}
-                onSelectOption={(sortBy) => {
-                  setToggleSort(false);
-                }}
-                setToggleMain={setToggleMain}
-              />
-            </DropDown>
-          </div>
+              toggle={toggleBrand}
+              options={brands}
+              onSelectOption={(brand) => {
+                setToggleBrand(false);
+              }}
+              setToggleMain={setToggleMain}
+            />
+            <DropDown
+              theme={theme}
+              setChoice={setChoice}
+              setSortBy={setSortBy}
+              setSortDir={setSortDir}
+              onChangeAction={onChangeAction}
+              query={query}
+              setSearchType={setSearchType}
+              searchType={searchType}
+              toggle={toggleCategory}
+              options={categories}
+              choice={"Category"}
+              setQuery={setQuery}
+              onSelectOption={(category) => {
+                setToggleCategory(false);
+              }}
+              setToggleMain={setToggleMain}
+            />
+            <DropDown
+              theme={theme}
+              query={query}
+              setQuery={setQuery}
+              toggle={toggleSort}
+              options={sortOptions}
+              choice={"sortBy"}
+              setSearchType={setSearchType}
+              searchType={searchType}
+              onChangeAction={onChangeAction}
+              setSortBy={setSortBy}
+              setSortDir={setSortDir}
+              onSelectOption={(sortBy) => {
+                setToggleSort(false);
+              }}
+              setToggleMain={setToggleMain}
+            />
+          </DropDown>
         </div>
       </div>
     </div>

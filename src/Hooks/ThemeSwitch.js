@@ -12,20 +12,28 @@ const ThemeSwitch = () => {
         onChange={handleThemeChange}
         checked={theme === "dark"}
         checkedIcon={
-          <span>
-            <FaMoon color="white" size={12} />
+          <span
+            style={{
+              marginTop: "-4px",
+            }}>
+            <FaMoon color="white" size={16} />
           </span>
         } // Set paddingLeft to 0 for moon icon
         uncheckedIcon={
-          <span>
-            <FaSun color="yellow" size={12} />
+          <span
+            style={{
+              marginLeft: "8px",
+              display: "flex",
+              alignItems: "center",
+            }}>
+            <FaSun color="#FF4500" size={20} />
           </span>
         } // Set paddingRight to 0 for sun icon
         height={20}
         width={48}
         handleDiameter={24}
         offColor="#bbb"
-        onColor="#333"
+        onColor="#555"
       />
     </label>
   );
