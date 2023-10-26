@@ -5,14 +5,16 @@ const UserService = () => {
   const username = localStorage.getItem("user");
 
   const getuser = () => {
-    return axiosPrivate.get(
-      "/user/",
-      { params: { username: JSON.parse(username) } },
-      {
-        headers: { "Content-Type": "application/json" },
-        withCredentials: true,
-      }
-    );
+    return axiosPrivate
+      .get(
+        "/user/",
+        { params: { username: JSON.parse(username) } },
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+        }
+      )
+      .then((res) => res.data);
   };
 
   const getImage = () => {
@@ -27,13 +29,25 @@ const UserService = () => {
   };
 
   const getAllUsers = () => {
-    return axiosPrivate.get("/admin/", {
+    return axiosPrivate.get("/admin/users/", {
       headers: { "Content-Type": "application/json" },
       withCredentials: true,
     });
   };
 
-  return { getuser, getAllUsers, getImage };
+  const updateUsername = (user) => {
+    console.log("username : " + JSON.parse(username) + " user : " + user);
+    return axiosPrivate.post(
+      "/user/usernameUpdate",
+      JSON.stringify({ username: username, password: JSON.stringify(user) }),
+      {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      }
+    );
+  };
+
+  return { getuser, getAllUsers, getImage, updateUsername };
 };
 
 export default UserService;

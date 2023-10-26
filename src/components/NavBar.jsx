@@ -35,7 +35,7 @@ const NavBar = () => {
     const getImage = async () => {
       try {
         const response = await getuser();
-        setImage(response?.data?.image);
+        setImage(response?.image);
       } catch (err) {
         console.error(err);
       }

@@ -12,6 +12,8 @@ const UserPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [changeImg, setChangeImg] = useState(false);
+  // const [changeUsername, setChangeUsername] = useState(false);
+  // const [newusername, setNewusername] = useState("");
   const { getuser } = UserService();
 
   document.title = "SHOP | USER";
@@ -21,7 +23,7 @@ const UserPage = () => {
       try {
         setLoading(true);
         const response = await getuser();
-        setUser(response.data);
+        setUser(response);
       } catch (err) {
         if (err.response?.status !== 404) {
           setError("Failed to fetch user data");
@@ -31,8 +33,16 @@ const UserPage = () => {
       }
     };
     getUser();
-    // eslint-disable-next-line
+    //eslint-disable-next-line
   }, []);
+
+  // const HandleUsernameChange = async () => {
+  //   // console.log(newusername);
+  //   // console.log(JSON.parse(localStorage.getItem("username")));
+  //   const response = await updateUsername(newusername);
+  //   console.log(response);
+  //   setChangeUsername(false);
+  // };
 
   if (loading) {
     return <LoadingPage />;
@@ -43,9 +53,9 @@ const UserPage = () => {
   }
 
   return (
-    <div className=" min-h-screen flex flex-col justify-center items-center">
+    <div className="min-h-screen flex flex-col items-center justify-center">
       {user ? (
-        <div className=" shadow-lg rounded-lg overflow-hidden w-full max-w-md p-6">
+        <div className="shadow-lg rounded-lg w-full max-w-md p-6 overflow-hidden">
           <div className="flex flex-col items-center">
             {user?.image && !changeImg ? (
               <>
@@ -55,7 +65,6 @@ const UserPage = () => {
                   className="w-32 h-32 bg-gray-300 rounded-full mb-4"
                 />
                 <button
-                  // eslint-disable-next-line no-undef
                   onClick={() => setChangeImg(true)}
                   className={`btn-${theme} px-2 py-1 text-xs rounded cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-300 mt-2`}>
                   Change Profile Picture
@@ -69,7 +78,7 @@ const UserPage = () => {
             <h2 className="font-semibold text-center text-lg mb-4">
               User Details
             </h2>
-            <div className={` text-${theme} space-y-2 text-gray-600`}>
+            <div className={`space-y-2 text-gray-600 text-${theme}`}>
               <p className="flex justify-between">
                 <span className="font-bold">Name:</span>
                 {user?.name}
@@ -91,14 +100,6 @@ const UserPage = () => {
                 {user?.username}
               </p>
             </div>
-          </div>
-          <div className="mt-6 flex space-x-2">
-            <button onClick={user} className={`btn-${theme} py-2 px-4 rounded`}>
-              Change Username
-            </button>
-            <button onClick={user} className={`btn-${theme} py-2 px-4 rounded`}>
-              Change Password
-            </button>
           </div>
         </div>
       ) : (

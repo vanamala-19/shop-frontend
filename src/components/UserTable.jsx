@@ -19,16 +19,16 @@ const UsersTable = ({ User, deleteUser, id }) => {
         <div className="text-sm text-gray-500">{User.username}</div>
       </td>
       <td className="text-left px-6 py-4 whitespace-nowrap">
-        <div className="text-sm text-gray-500">{User.custName}</div>
+        <div className="text-sm text-gray-500">{User.name}</div>
       </td>
       <td className="text-left px-6 py-4 whitespace-nowrap">
-        <div className="text-sm text-gray-500">{User.custEmail}</div>
+        <div className="text-sm text-gray-500">{User.email}</div>
       </td>
       <td className="text-left px-6 py-4 whitespace-nowrap">
-        <div className="text-sm text-gray-500">{User.custPhone}</div>
+        <div className="text-sm text-gray-500">{User.phone}</div>
       </td>
       <td className="text-left px-6 py-4 whitespace-nowrap">
-        <div className="text-sm text-gray-500">{User.custAdress}</div>
+        <div className="text-sm text-gray-500">{User.address}</div>
       </td>
       <td className="text-right px-6 py-4 whitespace-nowrap font-medium text-sm">
         <button

@@ -22,6 +22,7 @@ const Users = () => {
       try {
         const response = await getAllUsers();
         setUsers(response.data);
+        console.log(response);
       } catch (err) {
         console.error(err);
         navigate("/", { state: { from: location }, replace: true });
@@ -47,28 +48,28 @@ const Users = () => {
     });
   };
 
-  let filteredUsers = null;
-  if (users?.length) {
-    filteredUsers = users
-      .filter((User) => {
-        return (
-          User.custName.toLowerCase().includes(query.toLowerCase()) ||
-          User.custEmail.toLowerCase().includes(query.toLowerCase()) ||
-          User.custAdress.toLowerCase().includes(query.toLowerCase()) ||
-          Number(User.custPhone).toString().includes(query)
-        );
-      })
-      .sort((a, b) => {
-        let order = orderBy === "asc" ? 1 : -1;
-        return a[sortBy].toLowerCase() < b[sortBy].toLowerCase()
-          ? -1 * order
-          : 1 * order;
-      });
-  }
+  // let filteredUsers = null;
+  // if (users?.length) {
+  //   filteredUsers = users
+  //     .filter((User) => {
+  //       return (
+  //         User?.custName.toLowerCase().includes(query.toLowerCase()) ||
+  //         User?.custEmail.toLowerCase().includes(query.toLowerCase()) ||
+  //         User?.custAdress.toLowerCase().includes(query.toLowerCase()) ||
+  //         Number(User.custPhone).toString().includes(query)
+  //       );
+  //     })
+  // .sort((a, b) => {
+  //   let order = orderBy === "asc" ? 1 : -1;
+  //   return a[sortBy].toLowerCase() < b[sortBy].toLowerCase()
+  //     ? -1 * order
+  //     : 1 * order;
+  // });
+  // }
 
   const startIndex = (page - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  const paginatedUsers = filteredUsers?.slice(startIndex, endIndex);
+  // const paginatedUsers = filteredUsers?.slice(startIndex, endIndex);
 
   return (
     <div className="container mx-auto my-8">
@@ -109,7 +110,7 @@ const Users = () => {
           </thead>
           {users.length ? (
             <tbody className="bg-white">
-              {paginatedUsers.map((User, i) => (
+              {users.map((User, i) => (
                 <UsersTable
                   User={User}
                   deleteUser={deleteUser}
