@@ -51,7 +51,7 @@ const Login = () => {
       resetUser();
       setPwd("");
       window.location.reload();
-      navigate(from, { replace: true });
+      navigate("/", { state: { from: location }, replace: true });
     } catch (err) {
       if (!err.response) {
         setErrMsg("No Server Response");
