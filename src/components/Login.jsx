@@ -50,7 +50,6 @@ const Login = () => {
       setAuth({ user, accessToken });
       resetUser();
       setPwd("");
-      window.location.reload();
       navigate("/", { state: { from: location }, replace: true });
     } catch (err) {
       if (!err.response) {
