@@ -4,6 +4,7 @@ import axios from "../api/axios";
 import { useContext } from "react";
 import ThemeContext from "../context/ThemeContext";
 import { useNavigate } from "react-router-dom";
+import LoadingPage from "./Loading";
 
 const USER_REGEX = /^[A-z][A-z0-9-_]{3,23}$/;
 const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
@@ -19,6 +20,7 @@ const Register = () => {
   const [user, setUser] = useState("");
   const [validName, setValidName] = useState(false);
   const [userFocus, setUserFocus] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [pwd, setPwd] = useState("");
   const [validPwd, setValidPwd] = useState(false);
@@ -58,6 +60,7 @@ const Register = () => {
       return;
     }
     try {
+      setLoading(true);
       // eslint-disable-next-line
       const response = await axios.post(
         REGISTER_URL,
@@ -82,8 +85,14 @@ const Register = () => {
         setErrMsg("Registration Failed");
       }
       errRef.current.focus();
+    } finally {
+      setLoading(false);
     }
   };
+
+  if (loading) {
+    return <LoadingPage />;
+  }
 
   return (
     <div className={`body text-${theme}`}>
