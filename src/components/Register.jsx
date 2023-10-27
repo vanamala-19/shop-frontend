@@ -18,7 +18,7 @@ const Register = () => {
   const userRef = useRef();
   const errRef = useRef();
 
-  const [user, setUser] = useInput ("userName", "")
+  const [user, reset, userAttribute] = useInput("userName", "");
   const [validName, setValidName] = useState(false);
   const [userFocus, setUserFocus] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -72,7 +72,7 @@ const Register = () => {
       );
       // clear state and controlled inputs
       // need value attrib on inputs for this
-      setUser("");
+      reset();
       setPwd("");
       setMatchPwd("");
       navigate("/login");
@@ -115,7 +115,7 @@ const Register = () => {
             id="username"
             ref={userRef}
             autoComplete="off"
-            onChange={(e) => setUser(e.target.value)}
+            {...userAttribute}
             value={user}
             required
             aria-invalid={validName ? "false" : "true"}
