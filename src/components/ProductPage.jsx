@@ -7,9 +7,13 @@ import ProductService from "../api/ProductService";
 import LoadingPage from "./Loading";
 import ThemeContext from "../context/ThemeContext";
 import { useContext } from "react";
+import CartService from "../api/CartService";
 
 const ProductPage = () => {
+  const { addProductToCart } = CartService();
   const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState(false);
   // eslint-disable-next-line
   const [reviews, setReviews] = useState([]);
   const [similarProducts, setSimilarProducts] = useState([]);
@@ -20,9 +24,15 @@ const ProductPage = () => {
     // // Fetch product details by ID
 
     const getProduct = async () => {
-      const response = await getProductById(id);
-      setProduct(response);
-      console.log(response);
+      try {
+        setLoading(true);
+        const response = await getProductById(id);
+        setProduct(response);
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
     };
     // // Fetch reviews for the product
     // fetch(`/api/reviews/${id}`)
@@ -32,17 +42,24 @@ const ProductPage = () => {
     //   });
     // // Fetch similar products by category
     const similar = async () => {
-      const response = await getAllProductsByCategory(
-        0,
-        8,
-        "id",
-        "asc",
-        product?.category
-      );
-      const filteredProducts = response?.products?.filter(
-        (p) => p.id !== product.id
-      );
-      setSimilarProducts(filteredProducts);
+      try {
+        setLoading(true);
+        const response = await getAllProductsByCategory(
+          0,
+          8,
+          "id",
+          "asc",
+          product?.category
+        );
+        const filteredProducts = response?.products?.filter(
+          (p) => p.id !== product.id
+        );
+        setSimilarProducts(filteredProducts);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setLoading(false);
+      }
     };
     if (product) {
       similar();
@@ -52,7 +69,19 @@ const ProductPage = () => {
     // eslint-disable-next-line
   }, [product?.category]);
 
-  if (!product) {
+  const addToCart = async (productId) => {
+    try {
+      const response = await addProductToCart(productId);
+      setSuccess(true);
+      setTimeout(() => {
+        setSuccess(false);
+      }, 3000);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  if (!product || loading) {
     return <LoadingPage />;
   }
 
@@ -77,7 +106,14 @@ const ProductPage = () => {
             </p>
             <p className="mt-2">Quantity: {product?.quantity} in stock</p>
             <p className="mt-2">Rating: {product?.rating} stars</p>
-            <button className="mt-4 bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300">
+            {success && (
+              <div className="bg-green-500 text-white p-4 rounded-md">
+                Product added to cart successfully!
+              </div>
+            )}
+            <button
+              className="mt-4 bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
+              onClick={() => addToCart(product?.id)}>
               Add to Cart
             </button>
           </div>

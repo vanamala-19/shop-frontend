@@ -115,7 +115,7 @@ const Home = () => {
 
   return (
     <div
-      className={`${theme}-theme text-${theme} bg-light text-dark mx-auto max-w-screen-lg px-5 py-5`}>
+      className={`${theme}-theme text-${theme} mx-auto max-w-screen-lg px-5 py-5`}>
       <Search
         choice={choice}
         setChoice={setChoice}
