@@ -12,6 +12,7 @@ import AddUser from "./components/AddUser";
 import Users from "./components/Users";
 import Cart from "./components/Cart";
 import Orders from "./components/Orders";
+import Product from "./components/Product";
 import ProductPage from "./components/ProductPage";
 import React, { useContext } from "react";
 import ThemeContext from "./context/ThemeContext";
@@ -48,6 +49,7 @@ function App() {
             </Route>
             <Route element={<RequireAuth allowedRoles={["ADMIN"]} />}>
               <Route path="/admin" element={<Users />} />
+              <Route path="/product" element={<Product />} />
             </Route>
           </Route>
 

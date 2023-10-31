@@ -1,7 +1,6 @@
 import React from "react";
 
 const ProductCard = ({ product }) => {
-  // console.log(product.image);
   const FullStar = () => {
     return (
       <svg
@@ -41,11 +40,11 @@ const ProductCard = ({ product }) => {
   return (
     <article className="relative">
       <div className="aspect-square overflow-hidden">
-        <a href={`/product/${product.id}`} title="" className="">
-          {product.image ? (
+        <a href={`/product/${product?.id}`} title="" className="">
+          {product?.image ? (
             <img
               className="h-full w-full object-cover transition-all duration-300 group-hover:scale-125 image"
-              src={`data:image/jpeg;base64,${product.image}`}
+              src={`data:image/jpeg;base64,${product?.image}`}
               alt="Product pic"
             />
           ) : (
@@ -58,7 +57,7 @@ const ProductCard = ({ product }) => {
         </a>
       </div>
 
-      {product.quantity === 0 && (
+      {product?.quantity === 0 && (
         <div className="absolute top-0 right-0 m-1 rounded-full bg-red-600">
           <p className="rounded-full bg-red-600 p-1 text-[10px] font-bold uppercase tracking-wide text-white sm:py-1 sm:px-3">
             Out of Stock
@@ -71,16 +70,16 @@ const ProductCard = ({ product }) => {
           <h3 className="text-xs font-semibold sm:text-sm md:text-base">
             {/* <a href={`/product/${product.id}`} title="" className=""> */}
             <p className="" aria-hidden="true">
-              {product.name}
+              {product?.name}
             </p>
           </h3>
 
-          <Rating n={product.rating} />
+          <Rating n={product?.rating} />
         </div>
 
         <div className="text-right">
           <p className="text-xs font-normal sm:text-sm md:text-base">
-            {product.price} $
+            {product?.price} $
           </p>
         </div>
       </div>

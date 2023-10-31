@@ -23,8 +23,8 @@ const Home = () => {
     getCategories,
     getBrands,
   } = ProductService();
-  const [page, setPage] = useState(parseInt(searchParams.get("page")) || 0);
   const [product, setProduct] = useState([]);
+  const [page, setPage] = useState(parseInt(searchParams.get("page")) || 0);
   const [isLast, setIsLast] = useState(0);
   const [totalPages, setTotalPages] = useState();
   const [searchType, setSearchType] = useState("");

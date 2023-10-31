@@ -54,11 +54,28 @@ const CartService = () => {
     );
     return res.data;
   };
+  const removeProductToCart = async (productId) => {
+    const res = await axiosPrivate.get(
+      "/cart/remove/",
+      {
+        params: {
+          username: JSON.parse(username),
+          productId: productId,
+        },
+      },
+      {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      }
+    );
+    return res.data;
+  };
 
   return {
     getAllProductsFromCart,
     changeProductQuantity,
     addProductToCart,
+    removeProductToCart,
   };
 };
 
