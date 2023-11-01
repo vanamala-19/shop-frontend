@@ -7,16 +7,19 @@ import { useContext } from "react";
 import { MdClear } from "react-icons/md";
 import { useSearchParams } from "react-router-dom";
 import Pagination from "./Pagination";
+import OrderService from "../api/OrderService";
 
 const Cart = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const [cart, setCart] = useState([]);
   const [loading, setLoading] = useState();
+  const [orderSuccess, setOrderSuccess] = useState();
   const [error, setError] = useState();
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(parseInt(searchParams.get("page")) || 0);
   const [isLast, setIsLast] = useState(0);
   const [totalPages, setTotalPages] = useState();
+  const { addFromCart } = OrderService();
   const { theme } = useContext(ThemeContext);
 
   const { getAllProductsFromCart, changeProductQuantity, removeProductToCart } =
@@ -29,6 +32,7 @@ const Cart = () => {
       const response = await getAllProductsFromCart(0, 8);
       console.log(response);
       setTotal(0);
+      // eslint-disable-next-line array-callback-return
       response.products?.map((product) => {
         setTotal((prev) => prev + product?.price * product?.quantity);
       });
@@ -52,6 +56,7 @@ const Cart = () => {
 
     // Fetch the products in the cart from the server
     fetchCart();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleRemove = async (productId) => {
@@ -64,6 +69,19 @@ const Cart = () => {
       console.error(err);
     }
     console.log("cancel");
+  };
+
+  const addToOrder = async (productId) => {
+    try {
+      // eslint-disable-next-line no-unused-vars
+      const response = await addFromCart(productId);
+      setOrderSuccess(true);
+      setTimeout(() => {
+        setOrderSuccess(false);
+      }, 3000);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const updateProductQuantity = async (productId, increase) => {
@@ -117,8 +135,8 @@ const Cart = () => {
               {cart?.totalProducts} products
             </span>
             <div className="xl:px-10">
-              {cart?.map((product) => (
-                <div className="relative ">
+              {cart?.map((product, i) => (
+                <div className="relative " key={i}>
                   <button
                     className="absolute top-0 right-0 p-2 cursor-pointer -mt-6 -mr-10"
                     onClick={() => handleRemove(product?.id)}>
@@ -207,19 +225,18 @@ const Cart = () => {
                 <span data-config-id="auto-txt-16-1">{total}</span>
               </span>
             </div>
-            <a
+            <button
               className="inline-block w-full lg:w-auto py-5 px-10 text-xl leading-6 text-white font-medium tracking-tighter font-heading text-center bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded-xl"
-              href="/go"
+              onClick={() => addToOrder()}
               data-config-id="auto-txt-44-1">
               Order Now
-            </a>
+            </button>
           </div>
         </div>
       </div>
-      <div className="md:w-96">
+      <div className="md:w-40">
         <button
-          className={`btn-${theme} block py-5 px-2 w-full text-xl leading-6 font-medium tracking-tighter font-heading text-center focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded-xl -mt-24`}
-          data-config-id="auto-txt-47-1">
+          className={`btn-${theme} block py-5 px-2 w-full text-xl leading-6 font-medium tracking-tighter font-heading text-center focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 rounded-xl -mt-24`}>
           Back to shop
         </button>
       </div>

@@ -24,6 +24,7 @@ const OrdersPage = () => {
     };
 
     getOrders();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   if (loading) {
@@ -54,11 +55,13 @@ const OrdersPage = () => {
               <p className="mb-4">Total Price: {order.totalPrice}</p>
               <h3 className="text-xl font-semibold mb-2">Ordered Items:</h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                {order.orderedItems.map((item) => (
-                  <li key={item.id}>
-                    <ProductCard product={item} />
-                  </li>
-                ))}
+                <ul>
+                  {order.orderedItems.map((item) => (
+                    <li key={item.id}>
+                      <ProductCard product={item} />
+                    </li>
+                  ))}
+                </ul>
               </div>
             </li>
           ))}

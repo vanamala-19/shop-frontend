@@ -3,7 +3,6 @@ import ProductService from "../api/ProductService";
 import Search from "./Search";
 import { useNavigate, useLocation, useSearchParams } from "react-router-dom";
 import ProductCard from "./ProductCard";
-import LoadingPage from "./Loading";
 import Pagination from "./Pagination";
 import ThemeContext from "../context/ThemeContext";
 import { useContext } from "react";

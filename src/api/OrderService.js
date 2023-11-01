@@ -7,13 +7,13 @@ const OrderService = () => {
   const getAllOrders = async (page, size) => {
     const res = await axiosPrivate.get(
       "/orders/getUserOrders/" + JSON.parse(username),
-      //   {
-      //     params: {
-      //       username: JSON.parse(username),
-      //       pageNo: page,
-      //       pageSize: size,
-      //     },
+      // {
+      //   params: {
+      //     username: JSON.parse(username),
+      //     pageNo: page,
+      //     pageSize: size,
       //   },
+      // },
       {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
@@ -38,9 +38,9 @@ const OrderService = () => {
     );
     return res.data;
   };
-  const addProductToCart = async (productId) => {
+  const addFromProduct = async (productId) => {
     const res = await axiosPrivate.get(
-      "/cart/add/",
+      "/orders/addFromProduct/",
       {
         params: {
           username: JSON.parse(username),
@@ -55,10 +55,26 @@ const OrderService = () => {
     return res.data;
   };
 
+  const addFromCart = async () => {
+    const res = await axiosPrivate.get(
+      "/orders/addFromCart/",
+      {
+        params: {
+          username: JSON.parse(username),
+        },
+      },
+      {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      }
+    );
+    return res.data;
+  };
   return {
     getAllOrders,
     changeProductQuantity,
-    addProductToCart,
+    addFromProduct,
+    addFromCart,
   };
 };
 

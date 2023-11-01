@@ -4,6 +4,7 @@ import Reviews from "./Reviews";
 import SimilarProducts from "./SimilarProducts";
 import { useParams } from "react-router-dom";
 import ProductService from "../api/ProductService";
+import OrderService from "../api/OrderService";
 import LoadingPage from "./Loading";
 import ThemeContext from "../context/ThemeContext";
 import { useContext } from "react";
@@ -13,11 +14,13 @@ const ProductPage = () => {
   const { addProductToCart } = CartService();
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [success, setSuccess] = useState(false);
+  const [cartsuccess, setCartSuccess] = useState(false);
+  const [ordersuccess, setOrderSuccess] = useState(false);
   // eslint-disable-next-line
   const [reviews, setReviews] = useState([]);
   const [similarProducts, setSimilarProducts] = useState([]);
   const { id } = useParams();
+  const { addFromProduct } = OrderService();
   const { getProductById, getAllProductsByCategory } = ProductService();
   const { theme } = useContext(ThemeContext);
   useEffect(() => {
@@ -71,10 +74,24 @@ const ProductPage = () => {
 
   const addToCart = async (productId) => {
     try {
+      // eslint-disable-next-line no-unused-vars
       const response = await addProductToCart(productId);
-      setSuccess(true);
+      setCartSuccess(true);
       setTimeout(() => {
-        setSuccess(false);
+        setCartSuccess(false);
+      }, 3000);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const addToOrder = async (productId) => {
+    try {
+      const response = await addFromProduct(productId);
+      setOrderSuccess(true);
+      console.log(response);
+      setTimeout(() => {
+        setOrderSuccess(false);
       }, 3000);
     } catch (err) {
       console.error(err);
@@ -106,15 +123,25 @@ const ProductPage = () => {
             </p>
             <p className="mt-2">Quantity: {product?.quantity} in stock</p>
             <p className="mt-2">Rating: {product?.rating} stars</p>
-            {success && (
-              <div className="bg-green-500 text-white p-4 rounded-md">
+            {cartsuccess && (
+              <div className="bg-green-500 text-white p-1 rounded-md">
                 Product added to cart successfully!
+              </div>
+            )}
+            {ordersuccess && (
+              <div className="bg-green-500 text-white p-2 rounded-md">
+                Product Ordered successfully!
               </div>
             )}
             <button
               className="mt-4 bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
               onClick={() => addToCart(product?.id)}>
               Add to Cart
+            </button>
+            <button
+              className="mt-4 bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300"
+              onClick={() => addToOrder(product?.id)}>
+              Order Now
             </button>
           </div>
         </div>
