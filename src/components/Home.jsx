@@ -7,6 +7,7 @@ import LoadingPage from "./Loading";
 import Pagination from "./Pagination";
 import ThemeContext from "../context/ThemeContext";
 import { useContext } from "react";
+import ProductCardSkeleton from "./ProductCardSkeleton";
 const Home = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -106,9 +107,9 @@ const Home = () => {
   const handleSearchTypeChange = (newSearchType) => {
     setSearchType(newSearchType);
   };
-  if (loading) {
-    return <LoadingPage />;
-  }
+  // if (loading) {
+  //   return <LoadingPage />;
+  // }
   if (error) {
     return <p>{error}</p>;
   }
@@ -138,11 +139,20 @@ const Home = () => {
           setTrigger(trigger + 1); // increment trigger to force useEffect to re-run
         }}
       />
-      <main className="grid grid-cols-2 gap-x-6 gap-y-10 px-2 pb-20 sm:grid-cols-3 sm:px-8 lg:mt-16 lg:grid-cols-4 lg:gap-x-4 lg:px-0">
-        {product?.map((product, i) => (
-          <ProductCard key={i} product={product} />
-        ))}
-      </main>
+      {loading ? (
+        <div className="grid grid-cols-2 gap-x-6 gap-y-10 px-2 pb-20 sm:grid-cols-3 sm:px-8 lg:mt-16 lg:grid-cols-4 lg:gap-x-4 lg:px-0">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <ProductCardSkeleton key={i} />
+          ))}
+        </div>
+      ) : (
+        <main className="grid grid-cols-2 gap-x-6 gap-y-10 px-2 pb-20 sm:grid-cols-3 sm:px-8 lg:mt-16 lg:grid-cols-4 lg:gap-x-4 lg:px-0">
+          {product?.map((product, i) => (
+            <ProductCard key={i} product={product} />
+          ))}
+        </main>
+      )}
+
       <Pagination
         setPage={setPage}
         page={page}

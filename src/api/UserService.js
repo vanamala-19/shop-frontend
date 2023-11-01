@@ -4,17 +4,16 @@ const UserService = () => {
   const axiosPrivate = useAxiosPrivate();
   const username = localStorage.getItem("user");
 
-  const getuser = () => {
-    return axiosPrivate
-      .get(
-        "/user/",
-        { params: { username: JSON.parse(username) } },
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        }
-      )
-      .then((res) => res.data);
+  const getuser = async () => {
+    const res = await axiosPrivate.get(
+      "/user/",
+      { params: { username: JSON?.parse(username) } },
+      {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      }
+    );
+    return res.data;
   };
 
   const getImage = () => {

@@ -99,6 +99,7 @@ const Login = () => {
             onChange={(e) => setPwd(e.target.value)}
             value={pwd}
             required
+            autoComplete="current-password"
           />
           <button className={`btn-${theme}`} disabled={loading}>
             Sign In
