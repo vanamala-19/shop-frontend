@@ -14,6 +14,7 @@ import Cart from "./components/Cart";
 import Orders from "./components/Orders";
 import Product from "./components/Product";
 import ProductPage from "./components/ProductPage";
+import DisclaimerAlert from "./components/DisclaimerAlert";
 import React, { useContext } from "react";
 import ThemeContext from "./context/ThemeContext";
 function App() {
@@ -30,6 +31,7 @@ function App() {
   };
   return (
     <div style={theme === "light" ? lightStyle : darkStyle}>
+      <DisclaimerAlert />
       <Routes>
         <Route path="/" element={<Layout />}>
           {/* public Routes */}

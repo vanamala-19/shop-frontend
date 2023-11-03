@@ -32,6 +32,24 @@ const ProductService = () => {
       .then((res) => res.data);
   };
 
+  const getReviewsofProduct = (id) => {
+    return axiosPrivate
+      .get(`/review/${id}`, {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      })
+      .then((res) => res.data);
+  };
+
+  const addReviewsToProduct = (review) => {
+    return axiosPrivate
+      .get(`/review/add/`, review, {
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      })
+      .then((res) => res.data);
+  };
+
   const getCategories = () => {
     return axiosPrivate
       .get("/product/categories", {
@@ -125,6 +143,7 @@ const ProductService = () => {
     getCategories,
     getAllProducts,
     getProductById,
+    getReviewsofProduct,
   };
 };
 

@@ -21,7 +21,8 @@ const ProductPage = () => {
   const [similarProducts, setSimilarProducts] = useState([]);
   const { id } = useParams();
   const { addFromProduct } = OrderService();
-  const { getProductById, getAllProductsByCategory } = ProductService();
+  const { getProductById, getAllProductsByCategory, getReviewsofProduct } =
+    ProductService();
   const { theme } = useContext(ThemeContext);
   useEffect(() => {
     // // Fetch product details by ID
@@ -38,11 +39,19 @@ const ProductPage = () => {
       }
     };
     // // Fetch reviews for the product
-    // fetch(`/api/reviews/${id}`)
-    //   .then((response) => response.json())
-    //   .then((data) => {
-    //     setReviews(data);
-    //   });
+
+    const reviews = async () => {
+      try {
+        setLoading(true);
+        const response = await getReviewsofProduct(id);
+        console.log(response);
+        setReviews(response);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        setLoading(false);
+      }
+    };
     // // Fetch similar products by category
     const similar = async () => {
       try {
@@ -64,10 +73,14 @@ const ProductPage = () => {
         setLoading(false);
       }
     };
+
     if (product) {
       similar();
     }
 
+    if (product) {
+      reviews();
+    }
     getProduct();
     // eslint-disable-next-line
   }, [product?.category]);
