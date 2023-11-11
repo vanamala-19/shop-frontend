@@ -14,7 +14,7 @@ const OrdersPage = () => {
     const getOrders = async () => {
       try {
         const response = await getAllOrders();
-        console.log(response[0].id);
+        console.log(response);
         setOrders(response);
       } catch (error) {
         console.error("Error fetching orders:", error);
@@ -49,6 +49,7 @@ const OrdersPage = () => {
               <h2 className="text-2xl font-semibold mb-4">
                 Order ID: {order.id}
               </h2>
+              <p className="mb-2">Adress: {order.address}</p>
               <p className="mb-2">Order Time: {order.orderTime}</p>
               <p className="mb-2">Completion Time: {order.completionTime}</p>
               <p className="mb-2">Status: {order.status}</p>
