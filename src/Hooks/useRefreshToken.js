@@ -2,9 +2,11 @@ import axios from "../api/axios";
 import useAuth from "./useAuth";
 
 const useRefreshToken = () => {
-  const { setAuth } = useAuth();
+  const { setAuth,auth } = useAuth();
 
   const refresh = async () => {
+    console.log("called")
+    console.log(auth)
     localStorage.setItem("profile", false);
     const response = await axios.get("/auth/refresh", {
       headers: { "Content-Type": "application/json" },
@@ -15,7 +17,7 @@ const useRefreshToken = () => {
         accessToken: response.data,
       };
     });
-
+    console.log(auth+"new")
     return response.data;
   };
   return refresh;
