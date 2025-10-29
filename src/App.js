@@ -47,7 +47,7 @@ function App() {
           <Route path="login" element={<Login />} />
           <Route path="register" element={<Register />} />
           <Route path="unauthorized" element={<Unauthorized />} />
-          <Route path="product/:id" element={<ProductPage />} />
+          
 
           {/* Protected Routes */}
           <Route element={<PersistLogin />}>
@@ -58,6 +58,7 @@ function App() {
               <Route path="addUser" element={<AddUser />} />
               <Route path="orders" element={<Orders />} />
               <Route path="cart" element={<Cart />} />
+              <Route path="product/:id" element={<ProductPage />} />
             </Route>
 
             {/* Admin Only Routes */}
