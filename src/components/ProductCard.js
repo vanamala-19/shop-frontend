@@ -1,4 +1,7 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
+
+const navigate = useNavigate();
 
 const ProductCard = ({ product }) => {
   const FullStar = () => {
@@ -40,7 +43,7 @@ const ProductCard = ({ product }) => {
   return (
     <article className="relative">
       <div className="aspect-square overflow-hidden">
-        <a href={`/product/${product?.id}`} title="" className="">
+        onClick={() => navigate(`/product/${product?.id}`)}
           {product?.image ? (
             <img
               className="h-full w-full object-cover transition-all duration-300 group-hover:scale-125 image"
@@ -54,7 +57,7 @@ const ProductCard = ({ product }) => {
               alt=""
             />
           )}
-        </a>
+        
       </div>
 
       {product?.quantity === 0 && (
