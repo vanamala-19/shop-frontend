@@ -2,18 +2,33 @@ import { useLocation, Navigate, Outlet } from "react-router-dom";
 import useAuth from "../Hooks/useAuth";
 import jwt_decode from "jwt-decode";
 
-// import { Outlet } from "react-router-dom";
 const RequireAuth = ({ allowedRoles }) => {
   const { auth } = useAuth();
   const location = useLocation();
 
-  const decoded = auth?.accessToken ? jwt_decode(auth.accessToken) : undefined;
+  let decoded;
+  try {
+    if (auth?.accessToken && auth.accessToken !== "undefined") {
+      decoded = jwt_decode(auth.accessToken);
+    }
+  } catch (err) {
+    console.error("❌ Invalid token detected:", err);
+    // Optional: clear bad token from localStorage or context
+    localStorage.removeItem("user");
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
 
   const roles = decoded?.roles || [];
-  localStorage.setItem("user", JSON.stringify(decoded?.sub));
-  return roles?.find((role) => allowedRoles?.includes(role)) ? (
-    <Outlet />
-  ) : auth?.accessToken ? (
+
+  if (decoded?.sub) {
+    localStorage.setItem("user", JSON.stringify(decoded.sub));
+  }
+
+  if (roles.some((role) => allowedRoles?.includes(role))) {
+    return <Outlet />;
+  }
+
+  return auth?.accessToken ? (
     <Navigate to="/unauthorized" state={{ from: location }} replace />
   ) : (
     <Navigate to="/login" state={{ from: location }} replace />

@@ -26,6 +26,7 @@ const ProductPage = () => {
   const { theme } = useContext(ThemeContext);
   useEffect(() => {
     // // Fetch product details by ID
+    console.log("entered product page");
 
     const getProduct = async () => {
       try {

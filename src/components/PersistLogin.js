@@ -1,40 +1,34 @@
 import { Outlet } from "react-router-dom";
 import { useState, useEffect } from "react";
+import useAuth from "../Hooks/useAuth"; // custom hook to get/set auth tokens
 import useRefreshToken from "../Hooks/useRefreshToken";
-import useAuth from "../Hooks/useAuth";
-import useLocalStorage from "../Hooks/useLocalStorage";
 import LoadingPage from "./Loading";
 
 const PersistLogin = () => {
-  const [isLoading, setIsLoading] = useState(true);
+  const [isReady, setIsReady] = useState(false);
   const refresh = useRefreshToken();
   const { auth } = useAuth();
-  const [persist] = useLocalStorage("persist", true);
 
   useEffect(() => {
-    let isMounted = true;
-
-    const verifyRefreshToken = async () => {
+    const verifyToken = async () => {
       try {
-        await refresh();
+        console.log(auth);
+        if (!auth?.accessToken) {
+          await refresh(); // refresh token if accessToken missing
+        }
       } catch (err) {
-        console.error(err);
+        console.error("Token refresh failed:", err);
       } finally {
-        isMounted && setIsLoading(false);
+        setIsReady(true);
       }
     };
 
-    // persist added here AFTER tutorial video
-    // Avoids unwanted call to verifyRefreshToken
-    !auth?.accessToken && persist ? verifyRefreshToken() : setIsLoading(false);
+    verifyToken();
+  }, [auth, refresh]);
 
-    return () => (isMounted = false);
-    // eslint-disable-next-line
-  }, []);
+  if (!isReady) return <LoadingPage />;
 
-  return (
-    <>{!persist ? <Outlet /> : isLoading ? <LoadingPage /> : <Outlet />}</>
-  );
+  return <Outlet />; // render child routes after token is ready
 };
 
 export default PersistLogin;

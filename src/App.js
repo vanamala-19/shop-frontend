@@ -1,62 +1,74 @@
-import Register from "./components/Register";
-import Login from "./components/Login";
-import { Route, Routes } from "react-router-dom";
+import React, { useContext } from "react";
+import { Routes, Route } from "react-router-dom";
+import ThemeContext from "./context/ThemeContext";
+
+// Layout & Common Components
 import Layout from "./components/Layout";
-import Unauthorized from "./components/Unauthorized";
-import Home from "./components/Home";
-import UserPage from "./components/UserPage";
-import Missing from "./components/Missing";
+import DisclaimerAlert from "./components/DisclaimerAlert";
 import RequireAuth from "./components/RequireAuth";
 import PersistLogin from "./components/PersistLogin";
+
+// Public Pages
+import Login from "./components/Login";
+import Register from "./components/Register";
+import Unauthorized from "./components/Unauthorized";
+import Missing from "./components/Missing";
+
+// User Pages
+import Home from "./components/Home";
+import UserPage from "./components/UserPage";
 import AddUser from "./components/AddUser";
-import Users from "./components/Users";
-import Cart from "./components/Cart";
 import Orders from "./components/Orders";
-import Product from "./components/Product";
+import Cart from "./components/Cart";
 import ProductPage from "./components/ProductPage";
-import DisclaimerAlert from "./components/DisclaimerAlert";
-import React, { useContext } from "react";
-import ThemeContext from "./context/ThemeContext";
+
+// Admin Pages
+import Users from "./components/Users";
+import Product from "./components/Product";
+
 function App() {
   const { theme } = useContext(ThemeContext);
+
   document.title = "SHOP";
-  const lightStyle = {
-    backgroundColor: "#fff",
-    color: "#000",
+
+  const appStyle = {
+    backgroundColor: theme === "light" ? "#fff" : "#333",
+    color: theme === "light" ? "#000" : "#fff",
+    minHeight: "100vh",
   };
 
-  const darkStyle = {
-    backgroundColor: "#333",
-    color: "#fff",
-  };
   return (
-    <div style={theme === "light" ? lightStyle : darkStyle}>
+    <div style={appStyle}>
       <DisclaimerAlert />
       <Routes>
+        {/* Layout wraps Navbar and renders Outlet */}
         <Route path="/" element={<Layout />}>
-          {/* public Routes */}
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/unauthorized" element={<Unauthorized />} />
+          {/* Public Routes */}
+          <Route path="login" element={<Login />} />
+          <Route path="register" element={<Register />} />
+          <Route path="unauthorized" element={<Unauthorized />} />
+          <Route path="product/:id" element={<ProductPage />} />
 
-          {/* we need to protect this routes */}
+          {/* Protected Routes */}
           <Route element={<PersistLogin />}>
+            {/* User + Admin Routes */}
             <Route element={<RequireAuth allowedRoles={["USER", "ADMIN"]} />}>
               <Route path="/" element={<Home />} />
-              <Route path="/user" element={<UserPage />} />
-              <Route path="/addUser" element={<AddUser />} />
-              <Route path="/orders" element={<Orders />} />
-              <Route path="/product/:id" element={<ProductPage />} />
-              <Route path="/cart" element={<Cart />} />
+              <Route path="user" element={<UserPage />} />
+              <Route path="addUser" element={<AddUser />} />
+              <Route path="orders" element={<Orders />} />
+              <Route path="cart" element={<Cart />} />
             </Route>
+
+            {/* Admin Only Routes */}
             <Route element={<RequireAuth allowedRoles={["ADMIN"]} />}>
-              <Route path="/admin" element={<Users />} />
-              <Route path="/product" element={<Product />} />
+              <Route path="admin" element={<Users />} />
+              <Route path="product" element={<Product />} />
             </Route>
           </Route>
 
-          {/* catch all */}
-          <Route path="/missing" element={<Missing />} />
+          {/* Catch-All */}
+          <Route path="*" element={<Missing />} />
         </Route>
       </Routes>
     </div>

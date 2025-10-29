@@ -31,18 +31,22 @@ const NavBar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
-    // eslint-disable-next-line
-    const getImage = async () => {
-      try {
-        const response = await getuser();
-        setImage(response?.image);
-      } catch (err) {
-        console.error(err);
+  const fetchUser = async () => {
+    try {
+      const response = await getuser();
+      setImage(response?.image);
+    } catch (err) {
+      if (err?.response?.status === 401) {
+        console.warn("User not logged in"); // fallback
+        setImage(null);
+      } else {
+        console.error("Failed to fetch user:", err);
       }
-    };
-    getImage();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    }
+  };
+
+  fetchUser();
+}, []);
 
   return (
     <div>

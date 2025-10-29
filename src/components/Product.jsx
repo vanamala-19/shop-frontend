@@ -1,5 +1,3 @@
-// i have changed the front end and backend
-// front end
 import React, { useEffect, useState } from "react";
 import useAxiosPrivate from "../Hooks/useAxiosPrivate";
 
@@ -10,27 +8,23 @@ const Product = () => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [alert, setAlert] = useState({ message: "", type: "" });
 
+  // Fetch products from dummyjson API
   const getImage = async () => {
-    return await fetch("https://dummyjson.com/products?limit=100&skip=0")
-      .then((res) => res.json())
-      .then((res) => {
-        setProducts(res.products);
-      })
-      .catch((err) => {
-        console.error(err);
-      });
+    try {
+      const res = await fetch("https://dummyjson.com/products?limit=100&skip=0");
+      const data = await res.json();
+      setProducts(data.products);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const nextProduct = () => {
-    if (currentIndex < products.length - 1) {
-      setCurrentIndex(currentIndex + 1);
-    }
+    if (currentIndex < products.length - 1) setCurrentIndex(currentIndex + 1);
   };
 
   const prevProduct = () => {
-    if (currentIndex > 0) {
-      setCurrentIndex(currentIndex - 1);
-    }
+    if (currentIndex > 0) setCurrentIndex(currentIndex - 1);
   };
 
   const handleImageSelect = (image) => {
@@ -41,33 +35,58 @@ const Product = () => {
     setAlert({ message: "", type: "" });
   };
 
+  // Upload image
   const handleSubmit = async () => {
     try {
-      // Download the image as a Blob object
       const response = await fetch(selectedImage.imageId);
       const blob = await response.blob();
-
-      // Create a new File object from the Blob
       const file = new File([blob], "image.jpg", { type: blob.type });
 
-      // Prepare the FormData object
       const formData = new FormData();
       formData.append("image", file);
       formData.append("productId", selectedImage.productId);
 
-      // Send the FormData object to the backend
-      const res = await axiosPrivate.post("/admin/product/profile", formData, {
+      await axiosPrivate.post("/admin/product/profile", formData, {
         headers: { "Content-Type": "multipart/form-data" },
         withCredentials: true,
       });
 
-      console.log(res);
-      console.log(selectedImage.productId);
       setAlert({ message: "Image uploaded successfully", type: "success" });
     } catch (err) {
       console.error(err);
       setAlert({ message: "Image upload failed", type: "failure" });
     }
+  };
+
+  // Add product to backend DB
+  const handleAddProduct = async (product) => {
+    try {
+      const payload = {
+        id: product.id,
+        name: product.title,
+        description: product.description,
+        price: product.price,
+        quantity: product.stock || 1,
+        category: product.category,
+        brand: product.brand,
+        rating: product.rating,
+      };
+
+      await axiosPrivate.post("/admin/product/add", payload, { withCredentials: true });
+
+      setAlert({ message: `Product "${product.title}" added successfully`, type: "success" });
+    } catch (err) {
+      console.error(err);
+      setAlert({ message: `Failed to add product "${product.title}"`, type: "failure" });
+    }
+  };
+
+  // Add all products at once
+  const handleAddAllProducts = async () => {
+    for (let i = 0; i < products.length; i++) {
+      await handleAddProduct(products[i]);
+    }
+    setAlert({ message: "All products added successfully!", type: "success" });
   };
 
   useEffect(() => {
@@ -77,13 +96,11 @@ const Product = () => {
   return (
     <div>
       {alert.message && (
-        <div
-          style={{
-            backgroundColor: alert.type === "success" ? "green" : "red",
-          }}>
+        <div style={{ backgroundColor: alert.type === "success" ? "green" : "red", color: "white", padding: "5px" }}>
           {alert.message}
         </div>
       )}
+
       {products.length > 0 ? (
         <div>
           <div>
@@ -96,42 +113,36 @@ const Product = () => {
                 <button
                   onClick={() => handleImageSelect(image)}
                   className={`border-4 ${
-                    selectedImage?.imageId === image
-                      ? "border-blue-500"
-                      : "border-transparent"
-                  }`}>
-                  {/* eslint-disable-next-line */}
-                  <img
-                    src={image}
-                    alt={`Image`}
-                    className="w-64 h-64 object-cover rounded-lg"
-                  />
+                    selectedImage?.imageId === image ? "border-blue-500" : "border-transparent"
+                  }`}
+                >
+                  <img src={image} alt="Product" className="w-64 h-64 object-cover rounded-lg" />
                 </button>
               </div>
             ))}
           </div>
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            onClick={prevProduct}>
+
+          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={prevProduct}>
             Prev
           </button>
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            onClick={nextProduct}>
+          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={nextProduct}>
             Next
           </button>
-          <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            onClick={handleSubmit}>
-            Submit
+          <button className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded" onClick={() => handleAddProduct(products[currentIndex])}>
+            Add This Product
+          </button>
+          <button className="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded" onClick={handleAddAllProducts}>
+            Add All Products
+          </button>
+          <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={handleSubmit}>
+            Upload Selected Image
           </button>
         </div>
       ) : (
-        <p>No products</p>
+        <p>Loading products...</p>
       )}
     </div>
   );
 };
 
 export default Product;
-// backend

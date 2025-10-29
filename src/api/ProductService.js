@@ -1,31 +1,21 @@
 import useAxiosPrivate from "../Hooks/useAxiosPrivate";
-
+import useAuth from "../Hooks/useAuth"; // custom hook to get/set auth tokens
 const ProductService = () => {
   const axiosPrivate = useAxiosPrivate();
+  const { auth } = useAuth();
 
   const getAllProducts = (page, size, sortBy, sortDir) => {
-    return axiosPrivate
-      .get(
-        "/product/",
-        {
-          params: {
-            pageNo: page,
-            pageSize: size,
-            sortBy: sortBy,
-            sortDir: sortDir,
-          },
-        },
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        }
-      )
+    return axiosPrivate.get("/product/", {
+        params: { pageNo: page, pageSize: size, sortBy, sortDir },
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      })
       .then((res) => res.data);
   };
 
   const getProductById = (id) => {
-    return axiosPrivate
-      .get(`/product/${id}`, {
+    console.log("product by id "+id+" and lets check"); 
+    return axiosPrivate.get(`/product/${id}`, {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       })
@@ -33,8 +23,7 @@ const ProductService = () => {
   };
 
   const getReviewsofProduct = (id) => {
-    return axiosPrivate
-      .get(`/review/${id}`, {
+    return axiosPrivate.get(`/review/${id}`, {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       })
@@ -42,8 +31,7 @@ const ProductService = () => {
   };
 
   const addReviewsToProduct = (review) => {
-    return axiosPrivate
-      .get(`/review/add/`, review, {
+    return axiosPrivate.post(`/review/add/`, review, {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       })
@@ -51,8 +39,7 @@ const ProductService = () => {
   };
 
   const getCategories = () => {
-    return axiosPrivate
-      .get("/product/categories", {
+    return axiosPrivate.get("/product/categories", {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       })
@@ -60,8 +47,7 @@ const ProductService = () => {
   };
 
   const getBrands = () => {
-    return axiosPrivate
-      .get("/product/brands", {
+    return axiosPrivate.get("/product/brands", {
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
       })
@@ -69,70 +55,30 @@ const ProductService = () => {
   };
 
   const getAllProductsByName = (page, size, sortBy, sortDir, query) => {
-    return axiosPrivate
-      .get(
-        "/product/searchByName",
-        {
-          params: {
-            pageNo: page,
-            pageSize: size,
-            name: query,
-            sortBy: sortBy,
-            sortDir: sortDir,
-          },
-        },
-        {
-          headers: { "Content-Type": "application/json" },
-          withCredentials: true,
-        }
-      )
+    return axiosPrivate.get("/product/searchByName", {
+        params: { pageNo: page, pageSize: size, name: query, sortBy, sortDir },
+        headers: { "Content-Type": "application/json" },
+        withCredentials: true,
+      })
       .then((res) => res.data);
   };
 
-  const getAllProductsByCategory = async (
-    page,
-    size,
-    sortBy,
-    sortDir,
-    category
-  ) => {
-    const res = await axiosPrivate.get(
-      "/product/searchByCategory",
-      {
-        params: {
-          pageNo: page,
-          pageSize: size,
-          category: category,
-          sortBy: sortBy,
-          sortDir: sortDir,
-        },
-      },
-      {
+  const getAllProductsByCategory = (page, size, sortBy, sortDir, category) => {
+    return axiosPrivate.get("/product/searchByCategory", {
+        params: { pageNo: page, pageSize: size, category, sortBy, sortDir },
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
-      }
-    );
-    return res.data;
+      })
+      .then((res) => res.data);
   };
 
-  const getAllProductsByBrand = async (page, size, sortBy, sortDir, brand) => {
-    const res = await axiosPrivate.get(
-      "/product/searchByBrand",
-      {
-        params: {
-          pageNo: page,
-          pageSize: size,
-          brand: brand,
-          sortBy: sortBy,
-          sortDir: sortDir,
-        },
-      },
-      {
+  const getAllProductsByBrand = (page, size, sortBy, sortDir, brand) => {
+    return axiosPrivate.get("/product/searchByBrand", {
+        params: { pageNo: page, pageSize: size, brand, sortBy, sortDir },
         headers: { "Content-Type": "application/json" },
         withCredentials: true,
-      }
-    );
-    return res.data;
+      })
+      .then((res) => res.data);
   };
 
   return {
@@ -144,6 +90,7 @@ const ProductService = () => {
     getAllProducts,
     getProductById,
     getReviewsofProduct,
+    addReviewsToProduct,
   };
 };
 
