@@ -8,7 +8,8 @@ const useAxiosPrivate = () => {
   const { auth } = useAuth();
 
   useEffect(() => {
-    console.log("request with auth is "+auth)
+    console.log("request with auth is ")
+    console.log(auth)
     const requestIntercept = axiosPrivate.interceptors.request.use(
       (config) => {
         if (!config.headers["Authorization"]) {
@@ -28,7 +29,9 @@ const useAxiosPrivate = () => {
           prevRequest.sent = true;
           const newAcessToken = await refresh();
           prevRequest.headers["Authorization"] = `Bearer ${newAcessToken}`;
-          console.log("response sucess with auth is "+newAcessToken+" and auth is "+auth);
+
+          console.log("response sucess with auth is "+newAcessToken+" and auth is ");
+          console.log(auth)
           return axiosPrivate(prevRequest);
           
         }
