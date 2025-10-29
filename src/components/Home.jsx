@@ -37,6 +37,7 @@ const Home = () => {
 
   document.title = "SHOP | HOME";
   useEffect(() => {
+    console.log("updating check")
     searchParams.set("page", page.toString());
     setSearchParams(searchParams);
     const getAllProduct = async () => {
