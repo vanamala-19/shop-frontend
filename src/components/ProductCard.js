@@ -5,6 +5,7 @@ const navigate = useNavigate();
 
 const ProductCard = ({ product }) => {
   const FullStar = () => {
+    console.log("stars")
     return (
       <svg
         className="block h-3 w-3 align-middle text-pink-600 sm:h-4 sm:w-4"

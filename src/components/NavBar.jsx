@@ -41,6 +41,7 @@ const NavBar = () => {
         setImage(null);
       } else {
         console.error("Failed to fetch user:", err);
+        navigate("/");
       }
     }
   };
