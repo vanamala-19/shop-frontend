@@ -73,6 +73,7 @@ const Cart = () => {
 
   const addToOrder = async (productId) => {
     try {
+      console.log("order called");
       // eslint-disable-next-line no-unused-vars
       const response = await addFromCart(productId);
       setOrderSuccess(true);

@@ -19,6 +19,17 @@ const NavBar = () => {
     const response = await logout;
     response();
     toggleCheck();
+
+    // Remove cookies
+    document.cookie.split(";").forEach((c) => {
+      document.cookie = c
+        .replace(/^ +/, "")
+        .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
+    });
+
+    // Optionally clear local storage/session storage
+    localStorage.clear();
+    sessionStorage.clear();
     navigate("/");
   };
   const user = () => {

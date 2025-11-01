@@ -1,6 +1,6 @@
 import axios from "axios";
 const BASE_URL = "https://shop-backend-9nxw.onrender.com/";
-// const BASE_URL = "http://localhost:9000/";
+// const BASE_URL = "http://localhost:9999/";
 
 export default axios.create({
   baseURL: BASE_URL,
